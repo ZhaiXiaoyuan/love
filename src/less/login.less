@@ -1,0 +1,127 @@
+.login-page{
+  position: fixed;
+  top:0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: url("../images/common/kiss-bg.jpg") no-repeat center;
+  background-size: cover;
+  .login-modal{
+    position: fixed;
+    z-index: 500;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .mask{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      box-shadow: 0px 0px 100px 20px rgba(0,0,0,0.3) inset;
+    }
+    .modal-content{
+      position: relative;
+      z-index: 10;
+      width: 780px;
+      height: 420px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 5px 5px 30px rgba(0,0,0,0.4);
+    }
+    .modal-header{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 70px;
+      text-align: center;
+      &:after{
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        margin: auto;
+        display: block;
+        content: '';
+        height: 1px;
+        width: 280px;
+        background: #e6e6e6;
+      }
+    }
+    .modal-body{
+      text-align: center;
+      .declaration{
+        text-align: center;
+        font-size: 30px;
+        color: #333;
+        padding: 20px 0px;
+        .dot{
+          position: relative;
+          top:-8px;
+          margin: 0px 2px;
+          display: inline-block;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #333;
+        }
+      }
+      .input-row{
+        margin-top: 25px;
+      }
+      input{
+        width: 400px;
+        height: 80px;
+        font-size: 22px;
+        color: #333;
+        background: none;
+        outline: none;
+        border: 2px solid #e6e6e6;
+        text-align: center;
+      }
+      .submit-btn{
+        position: relative;
+        margin-top: 45px;
+        display: inline-block;
+        width: 200px;
+        height: 60px;
+        border: 2px solid #e6e6e6;
+        background: #fff;
+        padding: 5px;
+        span{
+          display: flex;
+          width: 100%;
+          height: 100%;
+          background: #ccc;
+          font-size: 22px;
+          color: #fff;
+          align-items: center;
+          justify-content: center;
+        }
+        &:before{
+          position: absolute;
+          content: '';
+          width: 35px;
+          height: 1px;
+          background: #fff;
+          top:0rem;
+          bottom: 0rem;
+          left: 25px;
+          margin: auto;
+        }
+        &:after{
+          position: absolute;
+          content: '';
+          width: 35px;
+          height: 1px;
+          background: #fff;
+          top:0rem;
+          bottom: 0rem;
+          right: 25px;
+          margin: auto;
+        }
+      }
+    }
+  }
+}

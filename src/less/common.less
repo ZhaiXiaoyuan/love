@@ -1,0 +1,126 @@
+@charset "utf-8";
+/* 全局CSS定义 */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  font-size: 0.3rem;
+  background: #fff;
+}
+
+h1, h2, h3, h4, p, ul, ol, dl, dt, dd {
+  margin: 0;
+  padding: 0;
+}
+
+/** 设置默认字体 **/
+body, button, input, select, textarea /* for ie */
+{
+  //font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
+  font-family: '宋体';
+  color: #666;
+}
+
+/** 清除内外边距 **/
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+th, td /* table elements 表格元素 */
+{
+  margin: 0;
+  padding: 0;
+}
+
+address, cite, dfn, em, var {
+  font-style: normal;
+}
+
+/* 将斜体扶正 */
+
+/** 重置列表元素 **/
+ul, ol, li {
+  list-style: none;
+}
+
+/** 重置文本格式元素 **/
+a {
+  text-decoration: none;
+  color: #666;
+  cursor: pointer;
+}
+
+a:hover, a:focus, a:visited {
+  text-decoration: none;
+  color: #666;
+}
+
+/*去掉IE的虚线框*/
+a:active, a:focus {
+  border: none;
+  outline: none;
+}
+
+/** 重置表单元素 **/
+fieldset, img {
+  border: 0;
+}
+
+/* img 搭车：让链接里的 img 无边框 */
+button, input, select, textarea {
+  font-size: 100%;
+}
+
+/* 使得表单元素在 ie 下能继承字体大小 */
+
+/** 重置表格元素 **/
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  line-height: inherit;
+}
+
+
+/*自定义样式*/
+.icon{
+  display: inline-block;
+}
+.en-text{
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
+}
+.cm-btn{
+  user-select: none;
+  cursor: pointer;
+  transition: all .3s;
+  &:active{
+    transform: scale(0.95,0.95);
+  }
+}
+.page-footer{
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  text-align: center;
+  line-height: 60px;
+  width: 100%;
+  height: 60px;
+  font-size: 14px;
+  color: #d1d1d1;
+  .en-text;
+}
