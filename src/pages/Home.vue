@@ -1,7 +1,16 @@
 <!--首页-->
 <template>
-    <div class="home-page">
-      首页
+    <div class="home-page" :style="{background: 'url('+coverPic+') no-repeat center',backgroundSize: 'auto 140%'}">
+      <div class="page-content">
+        <img class="flower-icon" :src="weddingFlower">
+        <p class="love-time">这是我们相爱的第<em class="en-text">99</em>天.</p>
+        <div class="cover-win">
+          <div class="win-content">
+            <img class="flower-icon" :src="coverPic">
+          </div>
+        </div>
+        <i class="icon married-icon"></i>
+      </div>
     </div>
 </template>
 
@@ -20,7 +29,8 @@
         },
         data: function () {
             return {
-
+              coverPic:require('../images/common/example-picture.jpg'),
+              weddingFlower:require('../images/common/home-wedding-flower-icon.png'),
             }
         },
         computed: {},

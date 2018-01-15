@@ -3,12 +3,19 @@
     <div class="container">
       <nav-bar></nav-bar>
       <router-view/>
+      <div class="page-footer">
+        ICP备&nbsp;&nbsp;5678910
+      </div>
     </div>
 </template>
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" rel="stylesheet/less" scoped>
+  .container{
+    width: 100%;
+    height: 100%;
+  }
 </style>
 
 <script>
