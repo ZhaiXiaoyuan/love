@@ -3,9 +3,6 @@
     <div class="container">
       <nav-bar></nav-bar>
       <router-view/>
-      <div class="page-footer">
-        ICP备&nbsp;&nbsp;5678910
-      </div>
     </div>
 </template>
 

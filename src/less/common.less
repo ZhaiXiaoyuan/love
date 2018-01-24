@@ -128,3 +128,85 @@ html,body{
   color: #d1d1d1;
   .en-text;
 }
+/*单行省略号*/
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/*内容面板复用样式*/
+.cm-panel{
+  width: 1400px;
+  margin: 0rem auto;
+  .panel-hd{
+    position: relative;
+    height: 150px;
+    border-bottom: 2px solid #e6e6e6;
+    .handle-list{
+      position: absolute;
+      left: 0px;
+      bottom: 10px;
+      display: inline-block;
+      overflow: hidden;
+    }
+    .handle-btn{
+      margin: 0px 10px;
+      float: left;
+      display: flex;
+      align-items: center;
+      padding: 0rem 12px;
+      height: 35px;
+      font-size: 18px;
+      color: #666;
+      border: 1px solid #cdcdcd;
+      border-radius: 5px;
+      .icon{
+        position: relative;
+        top:-1px;
+        margin-right: 4px;
+      }
+    }
+    .storage{
+      position: absolute;
+      right: 245px;
+      bottom: 24px;
+      display: inline-block;
+      font-size: 16px;
+      color: #b2b2b2;
+      .line{
+        display: inline-block;
+        height: 4px;
+        border-radius: 2px;
+        background: #e6e6e6;
+        width: 200px;
+        >div{
+          height: 100%;
+          margin-right: 15px;
+          background: #b3b3b3;
+        }
+      }
+    }
+    .hd-icon{
+      position: absolute;
+      right: 0px;
+      bottom: 14px;
+    }
+    .title{
+      position: absolute;
+      font-size: 30px;
+      color: #b2b2b2;
+      max-width: 400px;
+      left: 0px;
+      right: 0px;
+      bottom: 12px;
+      margin: auto;
+      text-align: center;
+    }
+  }
+}
+@media screen and(max-width: 1600px) {
+  .cm-panel{
+    width: 1000px;
+  }
+}

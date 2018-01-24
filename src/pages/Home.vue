@@ -11,6 +11,9 @@
         </div>
         <i class="icon married-icon"></i>
       </div>
+      <div class="page-footer">
+        ICP备&nbsp;&nbsp;5678910
+      </div>
     </div>
 </template>
 

@@ -13,7 +13,7 @@ const routes=[ {
   component: Container,
   children: [
     { path: 'home',name:'home',component: Home },
-    { path: 'album',name:'album', component: Album },
+    { path: 'album/:id?',name:'album', component: Album },
   ]
 },{
   path: '/account/login',
