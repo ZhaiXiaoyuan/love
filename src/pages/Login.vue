@@ -9,14 +9,14 @@
           </div>
           <div class="modal-body">
             <p class="declaration">
-              <span>莫冬</span>
+              <span>{{loverName}}</span>
               <span class="dot"></span>
               <span>我爱你</span>
             </p>
             <div class="input-row">
-              <input type="text" placeholder="请输入密匙">
+              <input type="password" v-model="password" placeholder="请输入密匙">
             </div>
-            <div class="cm-btn submit-btn">
+            <div class="cm-btn submit-btn" @click="login()">
               <span>确认</span>
             </div>
           </div>
@@ -35,24 +35,56 @@
 
 <script>
     import Vue from 'vue'
+    import md5 from 'js-md5'
 
     export default {
         components: {
         },
         data: function () {
             return {
-
+              hostName:null,
+              loverName:null,
+              vipLevel:0,
+              password:null,
             }
         },
         computed: {},
         watch: {},
         methods: {
-
+          login:function () {
+            let that=this;
+            if(!regex.pwd.test(this.password)){
+              this.operationFeedback({type:'warn',text:regex.pwdAlert});
+              return;
+            }
+            let params={
+              timeStamp:Vue.tools.genTimestamp(),
+             /* domain:this.hostName.replace('iou','我爱你'),*/
+              phone:'13700000000',
+              password:md5.hex(this.password)
+            }
+            let fb=this.operationFeedback({text:'登录中...'});
+            Vue.api.loginByPhone(params).then(function (resp) {
+              console.log('resp:',resp);
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'登录成功'});
+                that.$router.push({name:'home'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            });
+          }
         },
         created: function () {
         },
         mounted: function () {
-
+         /**/
+          this.hostName=window.location.hostname;
+          let hostNameStrArr=this.hostName.split('.');
+          if(hostNameStrArr[1]=='only'){
+            this.vipLevel=1;
+            this.loverName=hostNameStrArr[0];
+          }
         },
         route: {
            /* data: function(transition) {

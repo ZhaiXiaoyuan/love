@@ -1,34 +1,39 @@
 /**
- * Created by Designer on 2017/12/21.
- */
-import axios from 'axios'
-
+ * 接口地址放在这里，存放在Vue的全局自定义方法
+ * */
 export default {
-  install: function (Vue, options) {
-    /*添加请求拦截器*/
-    axios.interceptors.request.use(function (config) {
-      return config;
-    }, function (error) {
-      return Promise.reject(error);
-    });
-    /*添加响应拦截器*/
-    axios.interceptors.response.use(function (response) {
-      return response;
-    }, function (error) {
-      return Promise.reject(error);
-    });
+    install: function (Vue, options) {
 
-    /**/
-    Vue.api={
-      //获取首页数据
-      homePageData:function (params) {
-        return axios({
-          method: 'post',
-          url: '/lyy/rest/group/distributor/homepageData',
-          data: params
-        });
-      },
-    }
-  },
+        Vue.http.options.emulateJSON = true;
+        /*自定义ajax函数，自带的不好用*/
+        Vue.http.ajax = async function (options) {
+            if(options.method.toUpperCase() == 'GET'){
+                let res = await Vue.http.get(options.url, {params: options.params});
+                if(typeof res.body == 'string'){
+                    return JSON.parse(res.body);
+                }else{
+                    return res.body;
+                }
+            }else if(options.method.toUpperCase() == 'POST'){
+                let res = await Vue.http.post(options.url, options.params);
+                if(typeof res.body == 'string'){
+                    return JSON.parse(res.body);
+                }else{
+                    return res.body;
+                }
+            }
+        }
+        let basicUrl='/love/';
+        Vue.api = {
+            /*登录*/
+            loginByPhone: function (params) {
+                return Vue.http.ajax({
+                    method: 'post',
+                    url: basicUrl + 'domain/loginByPhone',
+                    params: params
+                });
+            },
+        }
+    },
 
 }

@@ -36,6 +36,7 @@
       width: 140px;
       height: 100%;
       text-align: center;
+      background: rgba(255,255,255,0.8);
     }
     ul{
       text-align: center;
