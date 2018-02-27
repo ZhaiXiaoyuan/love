@@ -18,16 +18,39 @@
           box-shadow: 0px 0px 12px rgba(0,0,0,0.1);
         }
         .cover{
+          position: relative;
           width: 100%;
           height: 160px;
           border: 1px solid #eee;
           border-radius: 3px;
+          border:2px solid #e7e7e7;
+          background-color: #fafafa;
+          .icon{
+            position: absolute;
+            top:0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            margin: auto;
+          }
         }
         .title{
           margin-top: 15px;
           font-size: 22px;
           color: #666;
+          font-family: '宋体';
+          padding: 6px 20px;
           .ellipsis;
+          input{
+            display: none;
+            width: 100%;
+            background: none;
+            font-size: 22px;
+            color: #666;
+            border: none;
+            outline: none;
+            font-family: '宋体';
+          }
         }
         .count{
           position: absolute;
@@ -65,6 +88,17 @@
             font-size: 16px;
             color: #666;
             text-align: center;
+          }
+        }
+        &.new,&.edit{
+          .title{
+            background: #fafafa;
+            span{
+              display: none;
+            }
+            input{
+              display: inline-block;
+            }
           }
         }
       }

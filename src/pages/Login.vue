@@ -59,14 +59,13 @@
             }
             let params={
               timeStamp:Vue.tools.genTimestamp(),
-             /* domain:this.hostName.replace('iou','我爱你'),*/
-              phone:'13700000000',
+              domain:this.hostName.replace('iou','我爱你'),
               password:md5.hex(this.password)
             }
             let fb=this.operationFeedback({text:'登录中...'});
-            Vue.api.loginByPhone(params).then(function (resp) {
-              console.log('resp:',resp);
+            Vue.api.loginByDomain(params).then(function (resp) {
               if(resp.respStatus=='success'){
+                that.$cookie.set('session',JSON.stringify(resp.respMsg),7);
                 fb.setOptions({type:'complete',text:'登录成功'});
                 that.$router.push({name:'home'});
               }else{

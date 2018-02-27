@@ -48,11 +48,13 @@
         span{
           display: block;
           font-size: 30px;
+          font-family: '宋体';
           &+span{
             display: inline-block;
             position: relative;
             margin-top: 5px;
             font-size: 10px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
             &:before{
               position: absolute;
               content: '';

@@ -11,7 +11,8 @@ const routes=[{
   alias:'/home',
   name: 'home',
   component: Home
-},{ path: 'album/:id?',
+},{
+  path: '/album/:id?',
   name:'album',
   component: Album
 },{

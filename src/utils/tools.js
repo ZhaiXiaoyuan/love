@@ -7,6 +7,7 @@
 import Vue from 'vue'
 import router from '../router'
 import App from '../App.vue'
+import md5 from 'js-md5'
 
 export default {
     install: function (Vue, options) {
@@ -52,6 +53,24 @@ export default {
           /*生成请求时间戳*/
           genTimestamp:function () {
             return Math.ceil(new Date().getTime()/1000)
+          },
+          //获取domainId,
+          getDomainId:function () {
+            let session=Vue.cookie.get('session');
+          },
+          sessionInfo:function () {
+            let session=JSON.parse(JSON.parse(Vue.cookie.get('session')));
+            var random = '';
+            for(var i = 0; i < 6; i += 1){
+              random += Math.floor(Math.random() * 10);
+            }
+            return{
+              timeStamp:this.genTimestamp(),
+              session:session.session,
+              key:session.key,
+              domainId:session.session?session.session.substring(0,32):null,
+              signature:"session=" + session.session + "&random=" + random + "&timeStamp=" + this.genTimestamp() + "&token=" + session.key
+            }
           }
         }
     },

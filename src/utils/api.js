@@ -1,47 +1,54 @@
 /**
- * Created by Designer on 2017/12/21.
- */
-import router from '../router'
-import axios from 'axios'
-
-
+ * 接口地址放在这里，存放在Vue的全局自定义方法
+ * */
 export default {
-  install: function (Vue, options) {
+    install: function (Vue, options) {
 
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+      Vue.http.options.emulateJSON = true;
+      Vue.http.interceptors.push((request, next)  =>{
 
-    /*添加请求拦截器*/
-    axios.interceptors.request.use(function (config) {
-      return config;
-    }, function (error) {
-      return Promise.reject(error);
-    });
-    /*添加响应拦截器*/
-    axios.interceptors.response.use(function (response) {
-      return response.data;
-    }, function (error) {
-      //对于有作登录状态的接口你，未未登录时跳转到登录页
-   /*   if(error.response.status==401){
-        router.push('login');
-      }*/
-      return Promise.reject(error);
-    });
-
-    /**/
-    let basicUrl='/love/';
-    Vue.api={
-      //登录
-      loginByPhone:function (params) {
-        return axios({
-          method: 'post',
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
-          },
-          url: basicUrl+'domain/loginByPhone',
-          params: params
+        next((response) => {
+          return response
         });
-      },
-    }
-  },
+
+      });
+        /*自定义ajax函数，自带的不好用*/
+        Vue.http.ajax = async function (options) {
+            if(options.method.toUpperCase() == 'GET'){
+                let res = await Vue.http.get(options.url, {params: options.params});
+                if(typeof res.body == 'string'){
+                    return JSON.parse(res.body);
+                }else{
+                    return res.body;
+                }
+            }else if(options.method.toUpperCase() == 'POST'){
+                let res = await Vue.http.post(options.url, options.params);
+                if(typeof res.body == 'string'){
+                    return JSON.parse(res.body);
+                }else{
+                    return res.body;
+                }
+            }
+        }
+        let basicUrl='http://api.only.我爱你/iou/';
+        Vue.api = {
+          /*登录*/
+          loginByDomain: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'domain/login',
+              params: params
+            });
+          },
+          /*获取相册列表*/
+          getAlbumList: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'album/queryAlbum',
+              params: params
+            });
+          },
+        }
+    },
 
 }
