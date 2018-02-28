@@ -19,14 +19,12 @@
     "less-loader": "^4.0.5",
     "lib-flexible": "^0.3.2",
     "mint-ui": "^2.2.13",
-    "pug": "^2.0.0-rc.4",
     "px2rem-loader": "^0.1.7",
     "vue": "^2.5.2",
     "vue-cookie": "^1.1.4",
     "vue-cookies": "^1.5.5",
     "vue-resource": "^1.4.0",
     "vue-router": "^3.0.1",
-    "vue-waterfall": "^1.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
