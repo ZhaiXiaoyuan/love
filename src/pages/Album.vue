@@ -104,10 +104,26 @@
           addAlbum:function () {
             let that=this;
             that.albumList.unshift({cover:null,name:null,count:0});
+            let params={
+              ...Vue.tools.sessionInfo(),
+              name:null,
+              cover:null
+            }
+            Vue.api.addAlbum(params).then(function (resp) {
+              if(resp.resultStatus=='success'){
+
+              }else{
+
+              }
+            });
           },
           getUploadKey:function () {
             let sessionInfo=Vue.tools.sessionInfo();
-            let params={...sessionInfo,bucket:'only.love.ablum.bucket',file:sessionInfo.domainId+'-album-'+Vue.tools.genTimestamp()+'.png'}
+            let params={
+              ...sessionInfo,
+              bucket:'only.love.ablum.bucket',
+              file:sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.png'
+            }
             Vue.api.getUploadKey(params).then(function (resp) {
               if(resp.resultStatus=='success'){
 
@@ -123,9 +139,9 @@
         },
         mounted: function () {
           //
-          /*this.getAlbumList();*/
+          this.getAlbumList();
           //临时测试
-          this.addAlbum();
+         /* this.addAlbum();*/
           this.curAlbum=this.albumList[1];
 
           /**/
