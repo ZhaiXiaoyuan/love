@@ -48,6 +48,14 @@ export default {
               params: params
             });
           },
+          /*获取文件上传鉴权*/
+          getUploadKey: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'fileSystem/getUploadKey',
+              params: params
+            });
+          },
         }
     },
 
