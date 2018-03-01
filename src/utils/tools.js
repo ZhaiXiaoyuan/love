@@ -67,7 +67,8 @@ export default {
             return{
               timeStamp:this.genTimestamp(),
               session:session.session,
-              key:session.key,
+           /*   key:session.key,*/
+              random:random,
               domainId:session.session?session.session.substring(0,32):null,
               signature:md5.hex("session=" + session.session + "&random=" + random + "&timeStamp=" + this.genTimestamp() + "&token=" + session.key)
             }
