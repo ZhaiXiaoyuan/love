@@ -10,7 +10,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" rel="stylesheet/less" scoped>
   .operation-feedback{
-    display: flex;
+   /* display: flex;
     position: fixed;
     z-index: 1000;
     top:0px;
@@ -18,18 +18,18 @@
     width: 100%;
     height: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: center;*/
   }
   .mask{
     position: absolute;
-    z-index: 1;
+    z-index: 9998;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,.45);
   }
   .content-block{
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    z-index: 9999;
     display: inline-block;
     padding: 20px 10px;
     min-width: 200px;
@@ -37,6 +37,11 @@
     text-align: center;
     background: rgba(0,0,0,0.8);
     border-radius: 5px;
+
+    left: 50%;
+    bottom: 50%;
+    -webkit-transform: translate3d(-50%,50%,0);
+    transform: translate3d(-50%,50%,0);
   }
   .text{
     padding-top: 5px;

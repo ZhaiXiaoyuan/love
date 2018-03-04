@@ -64,6 +64,30 @@ export default {
               params: params
             });
           },
+          /*向相册添加照片*/
+          addPic: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'albumcnt/addAlbumcnt',
+              params: params
+            });
+          },
+          /*删除相册*/
+          delAlbum: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'album/delAlbum',
+              params: params
+            });
+          },
+          /*修改相册名*/
+          updAlbumName: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'album/updAlbumName',
+              params: params
+            });
+          },
         }
     },
 

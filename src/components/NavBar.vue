@@ -109,7 +109,7 @@
           }
         },
         created: function () {
-          console.log('this.$route:',this.$route);
+          /*console.log('this.$route:',this.$route);*/
           /*this.pageName=this.$route.name;*/
         },
         mounted:function () {

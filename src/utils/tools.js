@@ -72,6 +72,24 @@ export default {
               domainId:session.session?session.session.substring(0,32):null,
               signature:md5.hex("session=" + session.session + "&random=" + random + "&timeStamp=" + this.genTimestamp() + "&token=" + session.key)
             }
+          },
+          /*获取文件上传鉴权*/
+          getUploadKey:function (options) {
+            let sessionInfo=this.sessionInfo();
+            let bucket=null;
+            let fileName=null;
+            switch (options.type){
+              case 'album':
+                bucket='only.love.ablum.bucket';
+                fileName=sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.png';
+            }
+            let params={
+              ...sessionInfo,
+              bucket:bucket,
+              file:fileName
+            }
+
+            return Vue.api.getUploadKey(params);
           }
         }
     },

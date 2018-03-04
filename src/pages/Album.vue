@@ -1,10 +1,10 @@
 <!--相册-->
 <template>
     <div class="album-page">
-       <div class="cm-panel album-panel" :class="{'edit-status':isEditAlbum}" v-if="!curAlbum">
+       <div class="cm-panel album-panel" :class="{'edit-status':isEditAlbum}" v-if="pageType=='album'">
          <div class="panel-hd">
            <div class="handle-list">
-             <div class="cm-btn handle-btn"><i class="icon add-icon"></i>新增相册</div>
+             <div class="cm-btn handle-btn" @click="addAlbumDom()"><i class="icon add-icon"></i>新增相册</div>
              <div class="cm-btn handle-btn manage-btn" @click="toEditAlbum()"><i class="icon manage-icon"></i>管理相册</div>
              <div class="cm-btn handle-btn complete-btn" @click="toEditAlbum()"><i class="icon complete-handle-icon"></i>完成</div>
            </div>
@@ -17,25 +17,25 @@
          </div>
          <div class="panel-bd">
            <ul class="entry-list">
-             <li v-for="entry in albumList" :class="{'new':!entry.cover}">
+             <li v-for="(entry,index) in albumList" :class="{'new':entry.new,'edit':curAlbum&&curAlbum.id==entry.id}" :key="entry.id">
               <div class="entry-bd">
-                <div class="cover" :style="{background: 'url('+entry.cover+') no-repeat center',backgroundSize: 'cover'}">
+                <div class="cover" :style="{background: 'url('+entry.cover+') no-repeat center',backgroundSize: 'cover'}" @click="selectAlbum(index)">
                   <i class="icon heart-icon" v-if="!entry.cover"></i>
                 </div>
                 <p class="title">
                   <span>{{entry.name}}</span>
-                  <input type="text" placeholder="点击输入相册名字" v-model="entry.name">
+                  <input type="text" placeholder="点击输入相册名字" @keyup.enter="addAlbum();saveAlbumName()" v-input-focus="curAlbum&&(curAlbum.id==entry.id)" v-model="entry.name">
                 </p>
                 <p class="count"><span class="en-text">{{entry.count}}</span>张</p>
               </div>
                <div class="entry-ft">
-                 <div class="cm-btn handle-btn edit-name-btn">
+                 <div class="cm-btn handle-btn edit-name-btn" @click="toRenameAlbum(index)">
                    <div>
                      <i class="icon pen-icon"></i>
                    </div>
                    <p>重命名</p>
                  </div>
-                 <div class="cm-btn handle-btn del-btn">
+                 <div class="cm-btn handle-btn del-btn" @click="delAlbum(index)">
                    <div>
                      <i class="icon del-icon"></i>
                    </div>
@@ -46,10 +46,13 @@
            </ul>
          </div>
        </div>
-      <div class="cm-panel detail-panel" v-if="curAlbum">
+      <div class="cm-panel detail-panel" v-if="pageType=='detail'">
         <div class="panel-hd">
           <div class="handle-list">
-            <div class="cm-btn handle-btn"><i class="icon add-icon"></i>上传照片/视频</div>
+            <div class="cm-btn handle-btn upload-btn">
+              <i class="icon add-icon"></i>上传照片/视频
+              <input type="file" id="album-file-input" multiple @change="selectFile()">
+            </div>
             <div class="cm-btn handle-btn manage-btn" @click="toEditPic()"><i class="icon manage-icon"></i>管理相册</div>
             <div class="cm-btn handle-btn complete-btn" @click="toEditAlbum()"><i class="icon more-icon"></i>更多</div>
           </div>
@@ -81,75 +84,197 @@
 
 <script>
     import Vue from 'vue'
+    import * as qiniu from 'qiniu-js'
     export default {
+      directives: {
+        focus: {
+          // 指令的定义
+          inserted: function (el) {
+            el.focus()
+          }
+        }
+      },
         components: {
         },
         data: function () {
             return {
+              pageType:'album',
               curAlbum:null,
-              albumList:[{cover:require('../images/common/example-picture.jpg'),name:'婚礼',count:368}],
+              selectedAlbum:null,
+            /*  albumList:[{cover:require('../images/common/example-picture.jpg'),name:'婚礼',count:368}],*/
+              albumList:[],
               isEditAlbum:false,
               isEditPic:false,
             }
         },
         computed: {
-          colPicList: function (colIndex) {
-            return this.curAlbum.picList.filter(function (index) {
-              return index%4===colIndex
-            })
-          }
         },
         watch: {},
         methods: {
           toEditAlbum:function () {
+            this.curAlbum=null;
             this.isEditAlbum=!this.isEditAlbum;
           },
           toEditPic:function () {
             this.isEditPic=!this.isEditPic;
           },
           getAlbumList:function () {
+            let that=this;
             let params={
               ...Vue.tools.sessionInfo(),
               pageNumber:1,
-              pageSize:2
+              pageSize:20
             }
             Vue.api.getAlbumList(params).then(function (resp) {
               if(resp.respStatus=='success'){
+                let data=JSON.parse(resp.respMsg);
+                that.albumList=that.albumList.concat(data.result);
+                //临时测试
+              /*  that.selectAlbum(0);*/
+              }else{
 
               }
             });
+          },
+          selectAlbum:function (index) {
+            let that=this;
+            that.selectedAlbum=that.albumList[index];
+            if(!that.selectedAlbum.id){
+              that.operationFeedback({type:'warn',text:'请先命名该相册'});
+            }
+          },
+          addAlbumDom:function () {
+            let that=this;
+            if(that.curAlbum&&!that.curAlbum.id){
+              that.operationFeedback({type:'warn',text:'您还有未创建完成的相册，请输入相册名称完成创建！'});
+              return;
+            }
+            let temAlbum={
+              name:null,
+              cover:null,
+              count:0,
+              new:true
+            };
+            that.albumList.unshift(temAlbum);
+            that.curAlbum=temAlbum;
           },
           addAlbum:function () {
             let that=this;
-            that.albumList.unshift({cover:null,name:null,count:0});
+            //如果不是新添加的相册，则中断函数
+            if(!that.curAlbum.new){
+              return
+            }
+            //
+            if(!that.curAlbum.name||that.curAlbum.name.length==0||that.curAlbum.name.length>50){
+              that.operationFeedback({type:'warn',text:'请输入相册名称，长度限制在50个字符以内！'});
+              return;
+            }
             let params={
               ...Vue.tools.sessionInfo(),
-              name:null,
-              cover:null
+              ...that.curAlbum
             }
+            let fb=that.operationFeedback({text:'创建中...'});
             Vue.api.addAlbum(params).then(function (resp) {
-              if(resp.resultStatus=='success'){
-
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'创建成功'});
+                that.curAlbum.new=false;
+                that.curAlbum=null;
               }else{
-
+                fb.setOptions({type:'warn',text:resp.respMsg});
               }
             });
           },
-          getUploadKey:function () {
-            let sessionInfo=Vue.tools.sessionInfo();
+          delAlbum:function (index) {
+            console.log('tsdfs')
+            let that=this;
             let params={
-              ...sessionInfo,
-              bucket:'only.love.ablum.bucket',
-              file:sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.png'
+              ...Vue.tools.sessionInfo(),
+              id:that.albumList[index].id
             }
-            Vue.api.getUploadKey(params).then(function (resp) {
-              if(resp.resultStatus=='success'){
-
+            let fb=that.operationFeedback({text:'删除中...'});
+            //如果是新添加的还没保存到数据库的相册，则不用请求接口，直接删除dom
+            if(!that.albumList[index].id){
+              fb.setOptions({type:'complete',text:'删除成功'});
+              return;
+            }
+            //
+            Vue.api.delAlbum(params).then(function (resp) {
+              if(resp.respStatus=='success'){
+                that.albumList.splice(index,1);
+                fb.setOptions({type:'complete',text:'删除成功'});
               }else{
-
+                fb.setOptions({type:'warn',text:resp.respMsg});
               }
             });
+          },
+          selectFile:function () {
+            let that=this;
+            let files=document.getElementById('album-file-input').files;
+            let fb=this.operationFeedback({text:'上传中，请耐心等待',mask:true});
+            let uploadedCount=0;
+            for(let i=0;i<files.length;i++){
+              let file=files[i];
+              let sessionInfo=Vue.tools.sessionInfo();
+              let params={
+                ...sessionInfo,
+                bucket:'only.love.ablum.bucket',
+                file:sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.'+file.type.split('/')[1]
+              }
+              Vue.api.getUploadKey(params).then(function (resp) {
+                if(resp.respStatus=='success'){
+                  var observable = qiniu.upload(file, params.file, resp.respMsg, {fname: file.name, params: {}, mimeType: [] || null
+                  }, {useCdnDomain: true, region: qiniu.region.z2});
+                  var subscription = observable.subscribe(function (data) {
+                  }, function (error) {
+                  }, function (reslult) {//上传成功
+                    console.log('reslult:',reslult);
+                    Vue.api.addPic({...Vue.tools.sessionInfo(),albumId:that.curAlbum.id,file:params.file,size:file.size,remark:null}).then(function (resp) {
+                      if(resp.respStatus=='success'){
+                        uploadedCount++;
+                        if(uploadedCount==files.length){
+                          fb.setOptions({type:'complete',text:'上传成功'});
+                        }
+                      }else{
 
+                      }
+                    });
+                 /*   console.log('reslult:',reslult);*/
+                  })
+                }else{
+
+                }
+              });
+            }
+          },
+          toRenameAlbum:function (index) {
+            let that=this;
+            that.curAlbum=that.albumList[index];
+          },
+          saveAlbumName:function () {
+            let that=this;
+            //如果相册不是处于编辑状态，则中断函数
+            if(!that.isEditAlbum||!that.curAlbum.id){
+              return;
+            }
+            if(!that.curAlbum.name||that.curAlbum.name.length==0||that.curAlbum.name.length>50){
+              that.operationFeedback({type:'warn',text:'请输入相册名称，长度限制在50个字符以内！'});
+              return;
+            }
+            let params={
+              ...Vue.tools.sessionInfo(),
+              id:that.curAlbum.id,
+              name:that.curAlbum.name
+            }
+            let fb=that.operationFeedback({text:'保存中...'})
+            Vue.api.updAlbumName(params).then(function (resp) {
+              if(resp.respStatus){
+                //此处必须用set方法来修改值才能刷新dom
+                Vue.set(album,'edit',false);
+                fb.setOptions({type:'complete',text:'保存成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            });
           }
         },
         created: function () {
@@ -161,7 +286,7 @@
           this.getAlbumList();
           //临时测试
          /* this.addAlbum();*/
-          this.curAlbum={
+        /*  this.curAlbum={
             picList:[
               {
                 url:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519928970239&di=e85b54a4be6c3ca4b2f38ebd0f865b1e&imgtype=0&src=http%3A%2F%2Fwww.rswmh.com%2Ffile%2Fupload%2F201509%2F08%2F06-18-45-31-1.jpg"
@@ -203,15 +328,9 @@
                 url:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519929019713&di=1f81ba6d0184c90861b7a3f2e5e76c27&imgtype=0&src=http%3A%2F%2Fimg.bjlmfq.com%2FUserEdit%2Fattached%2F2015221016203966281.jpg',
               },
             ]
-          };
-
-          setTimeout(function () {
-            that.curAlbum.picList=that.curAlbum.picList.concat(that.curAlbum.picList);
-          },5000);
-
+          };*/
 
           /**/
-          this.getUploadKey();
         },
         route: {
            /* data: function(transition) {
