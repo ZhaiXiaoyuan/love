@@ -83,6 +83,7 @@
           if(hostNameStrArr[1]=='only'){
             this.vipLevel=1;
             this.loverName=hostNameStrArr[0];
+
           }
         },
         route: {

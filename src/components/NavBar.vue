@@ -1,6 +1,6 @@
 <!--导航栏-->
 <template>
-    <div class="nav-bar">
+    <div class="nav-bar" v-if="pageName!='login'">
         <ul>
           <router-link   to="home" tag="li">
             <span>首页</span>
@@ -109,11 +109,10 @@
           }
         },
         created: function () {
-          console.log('this.$route:',this.$route);
-          /*this.pageName=this.$route.name;*/
+          this.pageName=this.$route.name;
         },
         mounted:function () {
-        }
+        },
     }
 
 

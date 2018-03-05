@@ -30,7 +30,8 @@ export default {
                 }
             }
         }
-        let basicUrl='http://api.only.我爱你/iou/';
+        //let basicUrl='http://api.only.我爱你/iou/';
+        let basicUrl='http://chenwz.ngrok.xiaomiqiu.cn/iou/';//临时测试
         Vue.api = {
           /*登录*/
           loginByDomain: function (params) {

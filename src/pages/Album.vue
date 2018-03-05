@@ -69,10 +69,8 @@
 
 <script>
     import Vue from 'vue'
-    import vueWaterfallEasy from 'vue-waterfall-easy'
     export default {
         components: {
-          vueWaterfallEasy,
         },
         data: function () {
             return {
@@ -113,7 +111,7 @@
         },
         mounted: function () {
           //
-          /*this.getAlbumList();*/
+          this.getAlbumList();
           //临时测试
           this.addAlbum();
           this.curAlbum=this.albumList[1];
@@ -125,7 +123,6 @@
                         return {}
                     }
                 });
-
 
             },
             waitForData: true,*/

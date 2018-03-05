@@ -69,7 +69,7 @@ export default {
               session:session.session,
               key:session.key,
               domainId:session.session?session.session.substring(0,32):null,
-              signature:"session=" + session.session + "&random=" + random + "&timeStamp=" + this.genTimestamp() + "&token=" + session.key
+              signature:md5.hex("session=" + session.session + "&random=" + random + "&timeStamp=" + this.genTimestamp() + "&token=" + session.key)
             }
           }
         }
