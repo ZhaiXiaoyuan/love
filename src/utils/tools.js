@@ -80,7 +80,7 @@ export default {
             let fileName=null;
             switch (options.type){
               case 'album':
-                bucket='only.love.ablum.bucket';
+                bucket='only.love.album.bucket';
                 fileName=sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.png';
             }
             let params={

@@ -61,7 +61,7 @@
         </div>
         <div class="panel-bd">
           <div v-for="n in 4">
-            <div class="item" v-for="(item,index) in curAlbum.picList" v-if="index%4==n-1">
+            <div class="item" v-for="(item,index) in selectedAlbum.picList" v-if="index%4==n-1">
               <img :src="item.url" alt="">
               <div class="cm-btn del-btn"><i class="icon del-grey-icon "></i></div>
               <div class="handle">
@@ -142,6 +142,7 @@
             if(!that.selectedAlbum.id){
               that.operationFeedback({type:'warn',text:'请先命名该相册'});
             }
+            that.pageType='detail';
           },
           addAlbumDom:function () {
             let that=this;
@@ -217,7 +218,7 @@
               let sessionInfo=Vue.tools.sessionInfo();
               let params={
                 ...sessionInfo,
-                bucket:'only.love.ablum.bucket',
+                bucket:'only.love.album.bucket',
                 file:sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.'+file.type.split('/')[1]
               }
               Vue.api.getUploadKey(params).then(function (resp) {
@@ -228,7 +229,7 @@
                   }, function (error) {
                   }, function (reslult) {//上传成功
                     console.log('reslult:',reslult);
-                    Vue.api.addPic({...Vue.tools.sessionInfo(),albumId:that.curAlbum.id,file:params.file,size:file.size,remark:null}).then(function (resp) {
+                    Vue.api.addPic({...Vue.tools.sessionInfo(),albumId:that.selectedAlbum.id,file:params.file,size:file.size,remark:null}).then(function (resp) {
                       if(resp.respStatus=='success'){
                         uploadedCount++;
                         if(uploadedCount==files.length){

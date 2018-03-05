@@ -110,6 +110,7 @@
         },
         created: function () {
           this.pageName=this.$route.name;
+          console.log('this.pageName:',this.pageName);
         },
         mounted:function () {
         },
