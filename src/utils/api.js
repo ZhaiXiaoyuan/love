@@ -89,6 +89,22 @@ export default {
               params: params
             });
           },
+          /*获取相册图片列表*/
+          getPicList: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'albumcnt/queryAlbumcnt',
+              params: params
+            });
+          },
+          /*删除照片*/
+          delPic: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'albumcnt/delAlbumcnt',
+              params: params
+            });
+          },
         }
     },
 

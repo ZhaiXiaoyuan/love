@@ -17,7 +17,7 @@
          </div>
          <div class="panel-bd">
            <ul class="entry-list">
-             <li v-for="(entry,index) in albumList" :class="{'new':entry.new,'edit':curAlbum&&curAlbum.id==entry.id}" :key="entry.id">
+             <li v-for="(entry,index) in albumList" :class="{'new':curAlbum&&curAlbum.new,'edit':curAlbum&&curAlbum.id==entry.id}" :key="entry.id">
               <div class="entry-bd">
                 <div class="cover" :style="{background: 'url('+entry.cover+') no-repeat center',backgroundSize: 'cover'}" @click="selectAlbum(index)">
                   <i class="icon heart-icon" v-if="!entry.cover"></i>
@@ -26,7 +26,7 @@
                   <span>{{entry.name}}</span>
                   <input type="text" placeholder="点击输入相册名字" @keyup.enter="addAlbum();saveAlbumName()" v-input-focus="curAlbum&&(curAlbum.id==entry.id)" v-model="entry.name">
                 </p>
-                <p class="count"><span class="en-text">{{entry.count}}</span>张</p>
+                <p class="count"><span class="en-text">{{entry.contentCount}}</span>张</p>
               </div>
                <div class="entry-ft">
                  <div class="cm-btn handle-btn edit-name-btn" @click="toRenameAlbum(index)">
@@ -53,17 +53,17 @@
               <i class="icon add-icon"></i>上传照片/视频
               <input type="file" id="album-file-input" multiple @change="selectFile()">
             </div>
-            <div class="cm-btn handle-btn manage-btn" @click="toEditPic()"><i class="icon manage-icon"></i>管理相册</div>
+            <div class="cm-btn handle-btn manage-btn" @click="toEditPic()"><i class="icon manage-icon"></i>批量管理</div>
             <div class="cm-btn handle-btn complete-btn" @click="toEditAlbum()"><i class="icon more-icon"></i>更多</div>
           </div>
-           <span class="title">标题</span>
+           <span class="title" v-if="selectedAlbum">{{selectedAlbum.name}}</span>
           <i class="icon hd-icon married-sm-icon"></i>
         </div>
         <div class="panel-bd">
           <div v-for="n in 4">
-            <div class="item" v-for="(item,index) in selectedAlbum.picList" v-if="index%4==n-1">
-              <img :src="item.url" alt="">
-              <div class="cm-btn del-btn"><i class="icon del-grey-icon "></i></div>
+            <div class="item" v-for="(item,index) in picList" v-if="index%4==n-1" :key="item.id">
+              <img :src="item.file" alt="">
+              <div class="cm-btn del-btn" @click="delPic(index)"><i class="icon del-grey-icon "></i></div>
               <div class="handle">
                 <div class="cm-btn btn">编辑</div>
                 <div class="cm-btn btn">设为封面</div>
@@ -101,8 +101,9 @@
               pageType:'album',
               curAlbum:null,
               selectedAlbum:null,
-            /*  albumList:[{cover:require('../images/common/example-picture.jpg'),name:'婚礼',count:368}],*/
+            /*  albumList:[{cover:require('../images/common/example-picture.jpg'),name:'婚礼',contentCount:368}],*/
               albumList:[],
+              picList:[],
               isEditAlbum:false,
               isEditPic:false,
             }
@@ -143,6 +144,7 @@
               that.operationFeedback({type:'warn',text:'请先命名该相册'});
             }
             that.pageType='detail';
+            that.getPicList();
           },
           addAlbumDom:function () {
             let that=this;
@@ -153,7 +155,7 @@
             let temAlbum={
               name:null,
               cover:null,
-              count:0,
+              contentCount:0,
               new:true
             };
             that.albumList.unshift(temAlbum);
@@ -177,8 +179,12 @@
             let fb=that.operationFeedback({text:'创建中...'});
             Vue.api.addAlbum(params).then(function (resp) {
               if(resp.respStatus=='success'){
+                let data=JSON.parse(resp.respMsg);
+                that.curAlbum.id=data.id;
+                that.curAlbum=Object.assign({}, that.curAlbum,...data);
+                Vue.set(that.curAlbum,'new',false);
                 fb.setOptions({type:'complete',text:'创建成功'});
-                that.curAlbum.new=false;
+                console.log('that.curAlbum:',that.curAlbum.new);
                 that.curAlbum=null;
               }else{
                 fb.setOptions({type:'warn',text:resp.respMsg});
@@ -233,6 +239,7 @@
                       if(resp.respStatus=='success'){
                         uploadedCount++;
                         if(uploadedCount==files.length){
+                          that.picList.unshift(JSON.parse(resp.respMsg));
                           fb.setOptions({type:'complete',text:'上传成功'});
                         }
                       }else{
@@ -272,6 +279,39 @@
                 //此处必须用set方法来修改值才能刷新dom
                 Vue.set(album,'edit',false);
                 fb.setOptions({type:'complete',text:'保存成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            });
+          },
+          getPicList:function () {
+            let that=this;
+            let params={
+              ...Vue.tools.sessionInfo(),
+              albumId:that.selectedAlbum.id,
+              pageNumber:1,
+              pageSize:20
+            }
+            Vue.api.getPicList(params).then(function (resp) {
+              if(resp.respStatus=='success'){
+                let data=JSON.parse(resp.respMsg);
+                that.picList=that.picList.concat(data.result);
+              }else{
+
+              }
+            });
+          },
+          delPic:function (index) {
+            let that=this;
+            let params={
+              ...Vue.tools.sessionInfo(),
+              id:that.picList[index].id
+            }
+            let fb=that.operationFeedback({text:'删除中...'});
+            Vue.api.delPic(params).then(function (resp) {
+              if(resp.respStatus=='success'){
+                that.picList.splice(index,1);
+                fb.setOptions({type:'complete',text:'删除成功'});
               }else{
                 fb.setOptions({type:'warn',text:resp.respMsg});
               }
