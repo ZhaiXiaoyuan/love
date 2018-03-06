@@ -86,14 +86,6 @@
     import Vue from 'vue'
     import * as qiniu from 'qiniu-js'
     export default {
-      directives: {
-        focus: {
-          // 指令的定义
-          inserted: function (el) {
-            el.focus()
-          }
-        }
-      },
         components: {
         },
         data: function () {
