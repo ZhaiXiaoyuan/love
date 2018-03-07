@@ -135,6 +135,30 @@ html,body{
   text-overflow: ellipsis;
 }
 
+/*自定义滚动条*/
+.cm-scroll{
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background-color: rgba(0, 0, 0, .5);
+    transition: all .3s;
+  }
+
+  &::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(0, 0, 0, .6);
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
 /*内容面板复用样式*/
 .cm-panel{
   width: 1400px;

@@ -226,7 +226,6 @@
                   var subscription = observable.subscribe(function (data) {
                   }, function (error) {
                   }, function (reslult) {//上传成功
-                    console.log('reslult:',reslult);
                     Vue.api.addPic({...Vue.tools.sessionInfo(),albumId:that.selectedAlbum.id,file:params.file,size:file.size,remark:null}).then(function (resp) {
                       if(resp.respStatus=='success'){
                         uploadedCount++;

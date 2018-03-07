@@ -12,11 +12,42 @@
       display: flex;
       justify-content: center;
       width: 33.3%;
+      &:hover,&.active{
+        .handle{
+          bottom: 0px;
+        }
+      }
     }
     .entry-content{
       .cover{
+        position: relative;
         width: 270px;
         height: 438px;
+        overflow: hidden;
+      }
+      .handle{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0px;
+        bottom: -100%;
+        height: 100px;
+        background: rgba(255,255,255,0.8);
+        width: 100%;
+        transition: bottom 0.5s;
+        .btn{
+          width: 100px;
+          height: 44px;
+          line-height: 44px;
+          text-align: center;
+          font-size: 18px;
+          color: #666;
+          border:1px solid #999;
+          &+.btn{
+            margin-left: 20px;
+          }
+        }
       }
       .info{
         color: #666;
@@ -42,8 +73,8 @@
   }
   .new-btn{
     position: fixed;
-    right: 10%;
-    bottom: 10%;
+    right: 5%;
+    bottom: 5%;
     .icon-wrap{
       display: flex;
       align-items: center;
@@ -53,6 +84,7 @@
       border: 1px solid #e5e5e5;
       box-shadow: 0px 4px 12px #e5e5e5;
       border-radius: 50%;
+      background: #fff;
       .icon{
         position: relative;
         top:2px;

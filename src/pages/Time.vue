@@ -1,7 +1,7 @@
 <!--时刻-->
 <template>
     <div class="time-page">
-       <div class="cm-panel time-panel">
+      <div class="cm-panel time-panel">
          <div class="panel-hd">
            <div class="handle-list">
              <div class="cm-btn handle-btn"><i class="icon sort-icon"></i>排序</div>
@@ -13,7 +13,12 @@
            <ul class="entry-list">
              <li class="entry" v-for="(entry,index) in timeList">
                <div class="entry-content">
-                 <div class="cover" :style="{background: 'url('+entry.url+') no-repeat center',backgroundSize: 'cover'}"></div>
+                 <div class="cover" :style="{background: 'url('+entry.url+') no-repeat center',backgroundSize: 'cover'}">
+                   <div class="handle">
+                     <div class="cm-btn btn">编辑</div>
+                     <div class="cm-btn btn">删除</div>
+                   </div>
+                 </div>
                  <div class="info">
                    <p class="title">去一趟斐济</p>
                    <p class="time">时刻：<em>2017.1.12</em></p>
@@ -29,6 +34,7 @@
         <span class="icon-wrap"><i class="icon heart-min-icon"></i></span>
         <p>新的时刻</p>
       </div>
+      <add-time-modal></add-time-modal>
     </div>
 </template>
 

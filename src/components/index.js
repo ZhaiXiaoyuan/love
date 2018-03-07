@@ -8,6 +8,7 @@ import Modal from './Modal';
 import AlertModal from './AlertModal';
 import ConfirmModal from './ConfirmModal';
 import GenCode from './GenCode';
+import AddTimeModal from './AddTimeModal';
 
 /*全局组件注册配置*/
 export default {
@@ -19,6 +20,7 @@ export default {
     Vue.component('AlertModal',AlertModal);
     Vue.component('ConfirmModal',ConfirmModal);
     Vue.component('GenCode',GenCode);
+    Vue.component('AddTimeModal',AddTimeModal);
 
     /*方法调度方式*/
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
