@@ -6,7 +6,8 @@
       <div class="modal-body">
         <div class="new-time-panel">
           <div class="panel-header">
-
+            <span class="return-btn"></span>
+            <span class="title">新的时刻</span>
           </div>
           <div class="panel-body">
 
@@ -75,6 +76,16 @@
     height: 100%;
     flex: 3;
     border: 1px solid red;
+  }
+  .new-time-panel{
+    .panel-header{
+      height: 20%;
+      border: 1px solid red;
+    }
+    .panel-body{
+      height: 80%;
+      border: 1px solid blue;
+    }
   }
   .time-queue-panel{
     margin-left: auto;
