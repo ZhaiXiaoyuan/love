@@ -90,7 +90,28 @@ export default {
             }
 
             return Vue.api.getUploadKey(params);
-          }
+          },
+          /*获取事件当前元素*/
+          getCurEle:function (e) {
+            var targetEle=null;
+            if(e.currentTarget){
+              targetEle=e.currentTarget;
+            }else if(event.srcElement){
+              targetEle=e.srcElement;
+            }
+            return targetEle;
+          },
+          /*阻止事件冒泡*/
+          stopPropagation:function(e){
+            if(e){
+              if(e.cancelBubble){
+                e.cancelBubble = true;
+              }
+              else if(e.stopPropagation){
+                e.stopPropagation();
+              }
+            }
+          },
         }
     },
 }

@@ -9,6 +9,7 @@ import 'mint-ui/lib/style.css'
 import router from './router'
 import api from './utils/api'
 import tools from './utils/tools'
+import './utils/filters'
 import './utils/directives'
 import components from './components'
 

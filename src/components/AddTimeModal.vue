@@ -6,11 +6,55 @@
       <div class="modal-body">
         <div class="new-time-panel">
           <div class="panel-header">
-            <span class="return-btn"></span>
+            <span class="cm-btn return-btn">
+              <i class="icon return-icon"></i>
+              <span>返回</span>
+            </span>
             <span class="title">新的时刻</span>
           </div>
           <div class="panel-body">
-
+            <div class="nav-block">
+              <div class="block-hd">
+                推荐
+              </div>
+              <div class="block-bd">
+                <ul>
+                  <li class="active">甜蜜</li>
+                  <li>快乐</li>
+                  <li>思念</li>
+                </ul>
+              </div>
+            </div>
+            <div class="title-block">
+              <div class="cm-btn item">
+                <i class="icon cross-icon"></i>
+                <span>听一场演唱会</span>
+              </div>
+              <div class="cm-btn item">
+                <i class="icon cross-icon"></i>
+                <span>听一场</span>
+              </div>
+              <div class="cm-btn item">
+                <i class="icon cross-icon"></i>
+                <span>听一场</span>
+              </div>
+              <div class="cm-btn item">
+                <i class="icon cross-icon"></i>
+                <span>听一场演唱会</span>
+              </div>
+              <div class="cm-btn item">
+                <i class="icon cross-icon"></i>
+                <span>听一场演唱会</span>
+              </div>
+              <div class="cm-btn item">
+                <i class="icon cross-icon"></i>
+                <span>听一场演唱会</span>
+              </div>
+            </div>
+            <div class="cm-btn random-btn">
+              <p>随机</p>
+              <p>选择</p>
+            </div>
           </div>
         </div>
         <div class="time-queue-panel">
@@ -19,25 +63,12 @@
           </div>
           <div class="panel-body cm-scroll">
             <ul>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
-              <li>去一趟斐济</li>
+              <li class="cm-btn" v-for="(item,index) in waitingList">{{item.momentName}}<input type="file" @change="selectFile($event,index)"></li >
             </ul>
           </div>
           <div class="panel-footer">
             <i class="icon add-lg-icon cm-btn add-btn"></i>
+            <span class="cm-btn diy-btn">自定义</span>
           </div>
         </div>
       </div>
@@ -55,6 +86,7 @@
     left: 0px;
     width: 100%;
     height: 100%;
+    font-family: '宋体';
   }
   .modal-content{
     position: fixed;
@@ -75,21 +107,123 @@
   .new-time-panel{
     height: 100%;
     flex: 3;
-    border: 1px solid red;
-  }
-  .new-time-panel{
+    margin-right: 20px;
     .panel-header{
-      height: 20%;
-      border: 1px solid red;
+      position: relative;
+      height: 10%;
+      text-align: center;
+      padding-top: 1%;
+      .title{
+        font-size: 28px;
+        color: #b3b3b3;
+      }
+      .return-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0px;
+        top:10%;
+        width: 80px;
+        height: 32px;
+        text-align: center;
+        border:1px solid #e5e5e5;
+        border-radius: 5px;
+        span{
+          padding-left: 10px;
+          font-size: 16px;
+          color: #b3b3b3;
+        }
+      }
     }
     .panel-body{
-      height: 80%;
-      border: 1px solid blue;
+      position: relative;
+      height: 90%;
+      border: 1px solid #ccc;
+      .nav-block{
+        float: left;
+        width: 22%;
+        height: 100%;
+        .block-hd{
+          padding: 15px 0px;
+          position: relative;
+          font-size: 24px;
+          color: #b2b2b2;
+          text-align: center;
+          &:after{
+            position: absolute;
+            content: '';
+            width: 60%;
+            height: 1px;
+            background: #ccc;
+            left: 0rem;
+            right: 0rem;
+            bottom: 0rem;
+            margin: auto;
+          }
+        }
+        .block-bd{
+          padding-top: 20px;
+          height: 100%;
+          ul{
+            li{
+              font-size: 18px;
+              color: #b2b2b2;
+              height: 50px;
+              line-height: 50px;
+              text-align: center;
+              cursor: pointer;
+              &.active{
+                color: #666;
+              }
+            }
+          }
+        }
+      }
+      .title-block{
+        float: left;
+        width: 78%;
+        height: 100%;
+        border-left: 1px solid #ccc;
+        overflow: hidden;
+        padding: 30px 0px;
+        .item{
+          float: left;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 50px;
+          font-size: 18px;
+          color: #b2b2b2;
+          border: 1px solid #e5e5e5;
+          padding: 0px 20px;
+          margin: 10px 15px;
+          .icon{
+            margin-right: 20px;
+          }
+        }
+      }
+      .random-btn{
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: 1px solid #e5e5e5;
+        border-radius: 50%;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+        font-size: 14px;
+        color: #b2b2b2;
+      }
     }
   }
   .time-queue-panel{
     margin-left: auto;
-    flex: 1.8;
+    flex: 1.1;
     height: 100%;
     background: #fff;
     border: 1px solid #e6e6e6;
@@ -120,12 +254,23 @@
       overflow: auto;
       ul{
         li{
+          position: relative;
           display: flex;
           align-items: center;
           height: 40px;
           font-size: 18px;
           color: #b2b2b2;
           font-weight: bold;
+          cursor: pointer;
+          input{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top:0px;
+            left: 0px;
+            opacity: 0;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -140,6 +285,17 @@
       align-items: center;
       font-size: 24px;
       color: #b2b2b2;
+      .diy-btn{
+        display: inline-block;
+        width: 80px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        color: #b2b2b2;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+      }
       &:before{
         position: absolute;
         content: '';
@@ -155,7 +311,7 @@
   }
   @media screen and(max-width: 1600px) {
     .modal-content{
-      width: 70%;
+      width: 78%;
       height: 640px;
     }
   }
@@ -163,7 +319,7 @@
 
 <script>
     import Vue from 'vue'
-
+    import * as qiniu from 'qiniu-js'
 
     export default {
         props: {
@@ -171,16 +327,100 @@
         },
         data:function () {
           return {
-
+            waitingList:[],
           }
         },
         methods:{
+          getWaitingTime:function () {
+            let params={
+              ...Vue.tools.sessionInfo()
+            }
+            Vue.api.getWaitingTime(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                this.waitingList=JSON.parse(resp.respMsg);
+              }else{
 
+              }
+            });
+          },
+          getPgcTime:function () {
+            let params={
+              ...Vue.tools.sessionInfo()
+            }
+            Vue.api.getPgcTime(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+
+              }else{
+
+              }
+            });
+          },
+          addWaitingTime:function () {
+            let params={
+              ...Vue.tools.sessionInfo(),
+              momentName:'听一场周董演唱会'
+            };
+            Vue.api.addWaitingTime(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+
+              }else{
+
+              }
+            });
+          },
+          selectFile:function ($event,index) {
+            let that=this;
+            let files=Vue.tools.getCurEle($event).files;
+            console.log('files:',files);
+            let fb=this.operationFeedback({text:'上传中，请耐心等待',mask:true});
+            let uploadedCount=0;
+            for(let i=0;i<files.length;i++){
+              let file=files[i];
+              let sessionInfo=Vue.tools.sessionInfo();
+              let params={
+                ...sessionInfo,
+                bucket:'only.love.moment.bucket',
+                file:sessionInfo.domainId+'-moment-'+sessionInfo.timeStamp+'.'+file.type.split('/')[1]
+              }
+              Vue.api.getUploadKey(params).then(function (resp) {
+                if(resp.respStatus=='success'){
+                  var observable = qiniu.upload(file, params.file, resp.respMsg, {fname: file.name, params: {}, mimeType: [] || null
+                  }, {useCdnDomain: true, region: qiniu.region.z2});
+                  var subscription = observable.subscribe(function (data) {
+                  }, function (error) {
+                  }, function (reslult) {//上传成功
+                    Vue.api.newTime({
+                      ...Vue.tools.sessionInfo(),
+                      file:params.file,
+                      title:that.waitingList[index].momentName,
+                      time:sessionInfo.timeStamp,
+                      permission:'private'}).then((resp)=>{
+                        if(resp.respStatus=='success'){
+                          uploadedCount++;
+                          if(uploadedCount==files.length){
+                            fb.setOptions({type:'complete',text:'创建成功'});
+                          }
+                        }else{
+
+                        }
+                    });
+                       console.log('reslult:',reslult);
+                  })
+                }else{
+
+                }
+              });
+            }
+          },
         },
         created: function () {
 
         },
         mounted:function () {
+          this.getWaitingTime();
+          this.getPgcTime();
+          //临时测试
+         /* this.addWaitingTime();*/
         },
     }
 

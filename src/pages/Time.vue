@@ -13,15 +13,15 @@
            <ul class="entry-list">
              <li class="entry" v-for="(entry,index) in timeList">
                <div class="entry-content">
-                 <div class="cover" :style="{background: 'url('+entry.url+') no-repeat center',backgroundSize: 'cover'}">
+                 <div class="cover" :style="{background: 'url('+entry.authUrl+') no-repeat center',backgroundSize: 'cover'}">
                    <div class="handle">
                      <div class="cm-btn btn">编辑</div>
                      <div class="cm-btn btn">删除</div>
                    </div>
                  </div>
                  <div class="info">
-                   <p class="title">去一趟斐济</p>
-                   <p class="time">时刻：<em>2017.1.12</em></p>
+                   <p class="title">{{entry.title}}</p>
+                   <p class="time">时刻：<em>{{entry.time|formatDate('yyyy.MM.dd')}}</em></p>
                    <p class="created-date">创建时间：<em>2017.1.12</em></p>
                  </div>
                </div>
@@ -34,7 +34,7 @@
         <span class="icon-wrap"><i class="icon heart-min-icon"></i></span>
         <p>新的时刻</p>
       </div>
-      <add-time-modal></add-time-modal>
+      <add-time-modal v-if="false"></add-time-modal>
     </div>
 </template>
 
@@ -53,20 +53,39 @@
         data: function () {
             return {
               timeList:[],
+              sort:'DESC',//排序方式，DESC，ASC
+              sortField:'time',//排序字段，time,createdAt
             }
         },
         computed: {
         },
         watch: {},
         methods: {
+          getTimeList:function () {
+            let that=this;
+            let params={
+              ...Vue.tools.sessionInfo(),
+              sort:this.sort,
+              field:this.sortField,
+              pageIndex:1,
+              pageSize:20
+            }
+            Vue.api.getTimeList(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                this.timeList=this.timeList.concat(JSON.parse(resp.respMsg));
+                console.log('this.timeList:',this.timeList);
+              }else{
 
+              }
+            })
+          }
         },
         created: function () {
 
         },
         mounted: function () {
           let that=this;
-          this.timeList= [
+         /* this.timeList= [
             {
               url:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519928970239&di=e85b54a4be6c3ca4b2f38ebd0f865b1e&imgtype=0&src=http%3A%2F%2Fwww.rswmh.com%2Ffile%2Fupload%2F201509%2F08%2F06-18-45-31-1.jpg"
             },
@@ -106,7 +125,9 @@
             {
               url:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519929019713&di=1f81ba6d0184c90861b7a3f2e5e76c27&imgtype=0&src=http%3A%2F%2Fimg.bjlmfq.com%2FUserEdit%2Fattached%2F2015221016203966281.jpg',
             },
-          ]
+          ]*/
+
+          this.getTimeList();
         },
         route: {
            /* data: function(transition) {

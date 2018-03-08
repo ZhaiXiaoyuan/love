@@ -105,6 +105,46 @@ export default {
               params: params
             });
           },
+          /*获取时刻列表*/
+           getTimeList: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/getMomentList',
+              params: params
+            });
+          },
+          /*获取等待时刻*/
+          getWaitingTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/getWaitMoment',
+              params: params
+            });
+          },
+          /*获取推荐时刻*/
+          getPgcTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/getPgcMoment',
+              params: params
+            });
+          },
+          /*添加等待时刻*/
+          addWaitingTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/addWaitMoment',
+              params: params
+            });
+          },
+          /*新建时刻*/
+          newTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/newMoment',
+              params: params
+            });
+          },
         }
     },
 
