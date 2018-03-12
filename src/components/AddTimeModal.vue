@@ -67,7 +67,6 @@
             </ul>
           </div>
           <div class="panel-footer">
-            <i class="icon add-lg-icon cm-btn add-btn"></i>
             <span class="cm-btn diy-btn">自定义</span>
           </div>
         </div>
@@ -225,89 +224,6 @@
     margin-left: auto;
     flex: 1.1;
     height: 100%;
-    background: #fff;
-    border: 1px solid #e6e6e6;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-    font-family: '宋体';
-    position: relative;
-    .panel-header{
-      padding: 15px 0px;
-      position: relative;
-      font-size: 24px;
-      color: #b2b2b2;
-      text-align: center;
-      &:after{
-        position: absolute;
-        content: '';
-        width: 60%;
-        height: 1px;
-        background: #ccc;
-        left: 0rem;
-        right: 0rem;
-        bottom: 0rem;
-        margin: auto;
-      }
-    }
-    .panel-body{
-      padding: 20px;
-      height:75%;
-      overflow: auto;
-      ul{
-        li{
-          position: relative;
-          display: flex;
-          align-items: center;
-          height: 40px;
-          font-size: 18px;
-          color: #b2b2b2;
-          font-weight: bold;
-          cursor: pointer;
-          input{
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top:0px;
-            left: 0px;
-            opacity: 0;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-    .panel-footer{
-      position: absolute;
-      width: 100%;
-      left: 0px;
-      bottom: 0px;
-      display: flex;
-      height: 80px;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      color: #b2b2b2;
-      .diy-btn{
-        display: inline-block;
-        width: 80px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 14px;
-        color: #b2b2b2;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        text-align: center;
-      }
-      &:before{
-        position: absolute;
-        content: '';
-        width: 60%;
-        height: 1px;
-        background: #ccc;
-        left: 0rem;
-        right: 0rem;
-        top: 0rem;
-        margin: auto;
-      }
-    }
   }
   @media screen and(max-width: 1600px) {
     .modal-content{
@@ -319,7 +235,6 @@
 
 <script>
     import Vue from 'vue'
-    import * as qiniu from 'qiniu-js'
 
     export default {
         props: {
@@ -358,7 +273,7 @@
           addWaitingTime:function () {
             let params={
               ...Vue.tools.sessionInfo(),
-              momentName:'听一场周董演唱会'
+              momentName:'标题'+Math.random()*1000
             };
             Vue.api.addWaitingTime(params).then((resp)=>{
               if(resp.respStatus=='success'){
@@ -368,56 +283,11 @@
               }
             });
           },
-          selectFile:function ($event,index) {
-            let that=this;
-            let files=Vue.tools.getCurEle($event).files;
-            console.log('files:',files);
-            let fb=this.operationFeedback({text:'上传中，请耐心等待',mask:true});
-            let uploadedCount=0;
-            for(let i=0;i<files.length;i++){
-              let file=files[i];
-              let sessionInfo=Vue.tools.sessionInfo();
-              let params={
-                ...sessionInfo,
-                bucket:'only.love.moment.bucket',
-                file:sessionInfo.domainId+'-moment-'+sessionInfo.timeStamp+'.'+file.type.split('/')[1]
-              }
-              Vue.api.getUploadKey(params).then(function (resp) {
-                if(resp.respStatus=='success'){
-                  var observable = qiniu.upload(file, params.file, resp.respMsg, {fname: file.name, params: {}, mimeType: [] || null
-                  }, {useCdnDomain: true, region: qiniu.region.z2});
-                  var subscription = observable.subscribe(function (data) {
-                  }, function (error) {
-                  }, function (reslult) {//上传成功
-                    Vue.api.newTime({
-                      ...Vue.tools.sessionInfo(),
-                      file:params.file,
-                      title:that.waitingList[index].momentName,
-                      time:sessionInfo.timeStamp,
-                      permission:'private'}).then((resp)=>{
-                        if(resp.respStatus=='success'){
-                          uploadedCount++;
-                          if(uploadedCount==files.length){
-                            fb.setOptions({type:'complete',text:'创建成功'});
-                          }
-                        }else{
-
-                        }
-                    });
-                       console.log('reslult:',reslult);
-                  })
-                }else{
-
-                }
-              });
-            }
-          },
         },
         created: function () {
 
         },
         mounted:function () {
-          this.getWaitingTime();
           this.getPgcTime();
           //临时测试
          /* this.addWaitingTime();*/

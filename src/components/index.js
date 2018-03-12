@@ -9,6 +9,7 @@ import AlertModal from './AlertModal';
 import ConfirmModal from './ConfirmModal';
 import GenCode from './GenCode';
 import AddTimeModal from './AddTimeModal';
+import HandleTimeModal from './HandleTimeModal';
 
 /*全局组件注册配置*/
 export default {
@@ -21,11 +22,13 @@ export default {
     Vue.component('ConfirmModal',ConfirmModal);
     Vue.component('GenCode',GenCode);
     Vue.component('AddTimeModal',AddTimeModal);
+    Vue.component('HandleTimeModal',HandleTimeModal);
 
     /*方法调度方式*/
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
     let AlertModalConstructor=Vue.extend(AlertModal);
     let ConfrimModalConstructor=Vue.extend(ConfirmModal);
+    let HandleTimeModalConstructor=Vue.extend(HandleTimeModal);
     const functionObject={
       /**
        * 操作提示
@@ -41,6 +44,9 @@ export default {
           delayForDelete:3000,//提示框消失延时,
           mask:false//是否显示蒙版
         },...options};
+        if(options.parent=='app'){
+          options.parentPosition='static';
+        }
         //
         let parentEle=document.getElementById(options.parent);
         //
@@ -161,6 +167,26 @@ export default {
         let parentEle=document.getElementById('app');
         //
         let instance=new ConfrimModalConstructor({});
+        instance.options=options;
+        instance.$mount();
+        parentEle.appendChild(instance.$el);
+      }
+      ,
+      /**
+       * 时刻新建、编辑弹窗
+       * @param options
+       */
+      handleTimeModal:function (options) {
+        options={...{
+          type:'add',
+          id:null,
+          ok:null,//回调
+          cancel:null,//
+        },...options};
+        //
+        let parentEle=document.getElementById('app');
+        //
+        let instance=new HandleTimeModalConstructor({});
         instance.options=options;
         instance.$mount();
         parentEle.appendChild(instance.$el);

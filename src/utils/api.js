@@ -145,6 +145,22 @@ export default {
               params: params
             });
           },
+          /*新建时刻*/
+          getTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/getMoment',
+              params: params
+            });
+          },
+          /*删除等待时刻*/
+          delWaitingTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/delWaitMoment',
+              params: params
+            });
+          },
         }
     },
 

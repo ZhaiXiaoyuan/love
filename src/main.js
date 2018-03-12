@@ -4,8 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import vueResource from 'vue-resource'
 import vueCookie from 'vue-cookie'
-import Mint from 'mint-ui'
-import 'mint-ui/lib/style.css'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
 import api from './utils/api'
 import tools from './utils/tools'
@@ -18,7 +18,7 @@ Vue.config.productionTip = false
 /*---安装第三方插件---*/
 Vue.use(vueResource);
 Vue.use(vueCookie);
-Vue.use(Mint);
+Vue.use(ElementUI);
 
 /*---安装自定义插件---*/
 Vue.use(api);
