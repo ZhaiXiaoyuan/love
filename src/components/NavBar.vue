@@ -2,23 +2,23 @@
 <template>
     <div class="nav-bar" v-if="pageName!='login'">
         <ul>
-          <router-link   to="home" tag="li">
+          <router-link   to="/home" tag="li">
             <span>首页</span>
             <span class="en-text">HOME</span>
           </router-link>
-          <router-link  to="album" tag="li">
+          <router-link  to="/album" tag="li">
             <span>相册</span>
             <span class="en-text">ALBUM</span>
           </router-link>
-          <router-link  to="time"  tag="li">
+          <router-link  to="/time"  tag="li">
             <span>时刻</span>
             <span class="en-text">TIME</span>
           </router-link>
-          <router-link  to="record"  tag="li">
+          <router-link  to="/record"  tag="li">
             <span>记录</span>
             <span class="en-text">RECORD</span>
           </router-link>
-          <router-link  to="wish" tag="li">
+          <router-link  to="/wish" tag="li">
             <span>心愿</span>
             <span class="en-text">WISH</span>
           </router-link>
@@ -110,7 +110,7 @@
         },
         created: function () {
           this.pageName=this.$route.name;
-          console.log('this.pageName:',this.pageName);
+          console.log('this.pageName:',this.$route.name);
         },
         mounted:function () {
         },

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './pages/Login.vue'
 import Home from './pages/Home.vue'
 import Album from './pages/Album.vue'
+import AlbumDetail from './pages/AlbumDetail.vue'
 import Time from './pages/Time.vue'
 
 Vue.use(Router)
@@ -13,9 +14,13 @@ const routes=[{
   name: 'home',
   component: Home
 },{
-  path: '/album/:id?',
+  path: '/album',
   name:'album',
   component: Album
+},{
+  path: '/album/:id',
+  name:'album',
+  component: AlbumDetail
 },{
   path: '/login',
   name: 'login',
