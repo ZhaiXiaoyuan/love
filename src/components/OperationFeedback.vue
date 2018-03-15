@@ -21,7 +21,7 @@
     justify-content: center;*/
   }
   .mask{
-    position: absolute;
+    position: fixed;
     top:0px;
     left: 0px;
     z-index: 9998;
@@ -30,7 +30,7 @@
     background: rgba(0,0,0,.45);
   }
   .content-block{
-    position: absolute;
+    position: fixed;
     z-index: 9999;
     display: inline-block;
     padding: 20px 10px;

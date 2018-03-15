@@ -242,7 +242,9 @@
               this.operationFeedback({type:'warn',text:'请选择时刻日期'});
               return;
             }
-
+            if(typeof this.date=='object'){
+              this.date=Vue.tools.formatDate(this.date,'yyyy.MM.dd');
+            }
             let params={
               ...sessionInfo,
               bucket:'only.love.moment.bucket',
@@ -267,6 +269,7 @@
                     if(resp.respStatus=='success'){
                       Vue.api.delWaitingTime({...Vue.tools.sessionInfo(),momentName:that.title}).then(function (resp) {
                         if(resp.respStatus=='success'){
+                          that.options.ok&&that.options.ok();
                           fb.setOptions({type:'complete',text:'创建成功'});
                           that.close();
                         }
@@ -275,7 +278,6 @@
 
                     }
                   });
-                  console.log('reslult:',reslult);
                 })
               }else{
 

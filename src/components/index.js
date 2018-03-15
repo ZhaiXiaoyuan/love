@@ -28,6 +28,7 @@ export default {
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
     let AlertModalConstructor=Vue.extend(AlertModal);
     let ConfrimModalConstructor=Vue.extend(ConfirmModal);
+    let AddTimeModalConstructor=Vue.extend(AddTimeModal);
     let HandleTimeModalConstructor=Vue.extend(HandleTimeModal);
     const functionObject={
       /**
@@ -167,6 +168,25 @@ export default {
         let parentEle=document.getElementById('app');
         //
         let instance=new ConfrimModalConstructor({});
+        instance.options=options;
+        instance.$mount();
+        parentEle.appendChild(instance.$el);
+      }
+      ,
+      /**
+       * 新建等待时刻
+       * @param options
+       */
+      addTimeModal:function (options) {
+        options={...{
+          waitingList:[],
+          ok:null,//回调
+          cancel:null,//
+        },...options};
+        //
+        let parentEle=document.getElementById('app');
+        //
+        let instance=new AddTimeModalConstructor({});
         instance.options=options;
         instance.$mount();
         parentEle.appendChild(instance.$el);

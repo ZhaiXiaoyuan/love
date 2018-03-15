@@ -40,15 +40,13 @@
         </div>
         <div class="panel-body cm-scroll">
           <ul>
-            <li class="cm-btn" v-for="(item,index) in waitingList" @click="showHandleTimeModal(index)">{{item.momentName}}</li >
+            <li class="cm-btn" v-for="(item,index) in waitingList" @click="addTime(index)">{{item.momentName}}</li >
           </ul>
         </div>
         <div class="panel-footer">
-          <i class="icon add-lg-icon cm-btn add-btn"></i>
+          <i class="icon add-lg-icon cm-btn add-btn" @click="addWaiting()"></i>
         </div>
       </div>
-      <add-time-modal v-if="false"></add-time-modal>
-    <!--  <handle-time-modal></handle-time-modal>-->
     </div>
 </template>
 
@@ -78,13 +76,16 @@
         },
         watch: {},
         methods: {
-          getTimeList:function () {
+          getTimeList:function (isInit) {
             let that=this;
+            if(isInit){
+              this.timeList=[];
+            }
             let params={
               ...Vue.tools.sessionInfo(),
               sort:this.sort,
               field:this.sortField,
-              pageIndex:1,
+              pageIndex:2,
               pageSize:20
             }
             Vue.api.getTimeList(params).then((resp)=>{
@@ -102,7 +103,6 @@
             Vue.api.getWaitingTime(params).then((resp)=>{
               if(resp.respStatus=='success'){
                 this.waitingList=JSON.parse(resp.respMsg);
-                this.addTime(0);//临时测试
               }else{
 
               }
@@ -118,6 +118,15 @@
               type:'add',
               name:this.waitingList[index].momentName,
               ok:()=>{
+                this.waitingList.splice(index,1);
+                this.getTimeList(true);
+              }
+            });
+          },
+          addWaiting:function () {
+            this.addTimeModal({
+              waitingList:this.waitingList,
+              ok:()=>{
 
               }
             });
@@ -128,9 +137,7 @@
         },
         mounted: function () {
           let that=this;
-          this.getTimeList();
-          //临时测试
-       /*   this.toggleWaitingPanel();*/
+          this.getTimeList(true);
         },
         route: {
            /* data: function(transition) {
