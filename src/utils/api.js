@@ -57,6 +57,14 @@ export default {
               params: params
             });
           },
+          /*获取存储空间*/
+          getRestSpace: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'fileSystem/getDomainStorage',
+              params: params
+            });
+          },
           /*获取文件上传鉴权*/
           getUploadKey: function (params) {
             return Vue.http.ajax({
@@ -70,6 +78,22 @@ export default {
             return Vue.http.ajax({
               method: 'post',
               url: basicUrl + 'albumcnt/addAlbumcnt',
+              params: params
+            });
+          },
+          /*设置默认封面*/
+          setDefCover: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'album/setDefCover',
+              params: params
+            });
+          },
+          /*设置封面*/
+          setCover: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'album/setCover',
               params: params
             });
           },
