@@ -10,6 +10,7 @@ import ConfirmModal from './ConfirmModal';
 import GenCode from './GenCode';
 import AddTimeModal from './AddTimeModal';
 import HandleTimeModal from './HandleTimeModal';
+import ScrollLoad from './ScrollLoad';
 
 /*全局组件注册配置*/
 export default {
@@ -23,6 +24,7 @@ export default {
     Vue.component('GenCode',GenCode);
     Vue.component('AddTimeModal',AddTimeModal);
     Vue.component('HandleTimeModal',HandleTimeModal);
+    Vue.component('ScrollLoad',ScrollLoad);
 
     /*方法调度方式*/
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
@@ -200,6 +202,7 @@ export default {
         options={...{
           type:'add',
           id:null,
+          entry:null,
           ok:null,//回调
           cancel:null,//
         },...options};

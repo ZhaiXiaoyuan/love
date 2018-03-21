@@ -16,6 +16,7 @@ import components from './components'
 Vue.config.productionTip = false
 
 /*---安装第三方插件---*/
+/*Vue.use($);*/
 Vue.use(vueResource);
 Vue.use(vueCookie);
 Vue.use(ElementUI);

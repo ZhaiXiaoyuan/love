@@ -16,17 +16,18 @@
                  <div class="cover" :style="{background: 'url('+entry.authUrl+') no-repeat center',backgroundSize: 'cover'}">
                    <div class="handle">
                      <div class="cm-btn btn">编辑</div>
-                     <div class="cm-btn btn">删除</div>
+                     <div class="cm-btn btn" @click="delTime(index)">删除</div>
                    </div>
                  </div>
                  <div class="info">
                    <p class="title">{{entry.title}}</p>
                    <p class="time">时刻：<em>{{entry.time|formatDate('yyyy.MM.dd')}}</em></p>
-                   <p class="created-date">创建时间：<em>2017.1.12</em></p>
+                   <p class="created-date">创建时间：<em>{{entry.createdAt|formatDate('yyyy.MM.dd')}}</em></p>
                  </div>
                </div>
              </li>
            </ul>
+           <scroll-load :page="pager" @scrolling="getTimeList()"></scroll-load>
          </div>
        </div>
       <div class="page-footer"></div>
@@ -70,6 +71,12 @@
               waitingPanelFlag:false,
               waitingList:[],
               targetTime:null,
+              pager:{
+                type:'noTotal',
+                pageIndex: 1,
+                pageSize: 5,
+                isLoading:false
+              }
             }
         },
         computed: {
@@ -79,18 +86,27 @@
           getTimeList:function (isInit) {
             let that=this;
             if(isInit){
-              this.timeList=[];
+              if(isInit){
+                this.pager.pageNum = 1;
+                this.timeList = [];
+              }
             }
             let params={
               ...Vue.tools.sessionInfo(),
               sort:this.sort,
               field:this.sortField,
-              pageIndex:2,
-              pageSize:20
+              pageIndex:this.pager.pageIndex,
+              pageSize:this.pager.pageSize
             }
+            this.pager.isLoading = true;
             Vue.api.getTimeList(params).then((resp)=>{
+              let list=JSON.parse(resp.respMsg);
               if(resp.respStatus=='success'){
-                this.timeList=this.timeList.concat(JSON.parse(resp.respMsg));
+                this.pager.pageIndex=this.pager.pageIndex + 1;
+                this.pager.resultLength=list.length;
+                this.pager.isLoading=false;
+                this.pager.isFinished=false;
+                this.timeList=this.timeList.concat(list);
               }else{
 
               }
@@ -130,13 +146,43 @@
 
               }
             });
+          },
+          delTime:function (index) {
+            var time=this.timeList[index];
+            this.confirm({
+              html:'<div>确定删除<em style="color:#368df3;">'+time.title+'</em>时刻?</div>',
+              ok:()=>{
+                let params={
+                  ...Vue.tools.sessionInfo(),
+                  momentId:time.id
+                }
+                let fb=this.operationFeedback({text:'删除中...'});
+                Vue.api.delTime(params).then((resp)=>{
+                  if(resp.respStatus=='success'){
+                    this.timeList.splice(index,1);
+                    fb.setOptions({type:'complete',text:'删除成功'});
+                  }else{
+                    fb.setOptions({type:'warn',text:resp.respMsg});
+                  }
+                })
+              }
+            });
+          },
+          editTime:function (index) {
+            let time=this.timeList[index];
+            this.handleTimeModal({
+              type:'edit',
+              entry:time,
+              ok:(data)=>{
+
+              }
+            });
           }
         },
         created: function () {
 
         },
         mounted: function () {
-          let that=this;
           this.getTimeList(true);
         },
         route: {

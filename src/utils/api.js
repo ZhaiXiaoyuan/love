@@ -185,6 +185,22 @@ export default {
               params: params
             });
           },
+          /*删除时刻*/
+          delTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/delMoment',
+              params: params
+            });
+          },
+          /*编辑时刻*/
+          editTime: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'moment/editMoment',
+              params: params
+            });
+          },
         }
     },
 

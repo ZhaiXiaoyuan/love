@@ -183,6 +183,7 @@
               return{
                 type:'add',
                 id:null,
+                entry:null,
                 name:null,
                 ok:()=>{},
                 cancel:()=>{}
@@ -284,9 +285,39 @@
               }
             });
           },
+          editTime:function () {
+            if(!this.title||this.title==''){
+              this.operationFeedback({type:'warn',text:'请输入时刻名称'});
+              return;
+            }
+            if(!this.date){
+              this.operationFeedback({type:'warn',text:'请选择时刻日期'});
+              return;
+            }
+            if(typeof this.date=='object'){
+              this.date=Vue.tools.formatDate(this.date,'yyyy.MM.dd');
+            }
+            let params={
+              ...Vue.tools.sessionInfo(),
+              momentId:this.options.entry?this.options.entry.id:this.options.id,
+              title:this.title,
+              time:new Date(this.date).getTime(),
+              file:this.options.entry.file,
+              permission:'private'
+            }
+            Vue.api.editTime(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+
+              }else{
+
+              }
+            })
+          },
           complete:function () {
             if(this.options.type=='add'){
               this.addTime();
+            }else if(this.options.type=='edit'){
+              this.editTime();
             }
           }
         },
@@ -295,10 +326,19 @@
         },
         mounted:function () {
           /**
-           * 新增时刻
+           *
            */
-          if(this.options.type=='add'){
+          if(this.options.type=='add'){//新增时刻
             this.title=this.options.name;
+          }else if(this.options.type=='edit'){//编辑时刻
+            console.log('this.options.entry:',this.options.entry);
+            if(this.options.entry){
+              this.imgUrl=this.options.entry.authUrl;
+              this.title=this.options.entry.title;
+              this.date=Vue.tools.formatDate(new Date(this.options.entry.time),'yyyy.MM.dd');
+            }else{
+              this.getTime();
+            }
           }
 
         },

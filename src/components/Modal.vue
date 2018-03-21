@@ -41,7 +41,7 @@
     .modal-content{
       position: relative;
       z-index: 202;
-      width: 70%;
+      width: 350px;
       margin: auto;
       background: #fff;
       border-radius: 4px;
@@ -55,10 +55,13 @@
       }
     }
     .modal-body{
-      padding: 0px 10px 15px 10px;
+      padding: 0px 20px 30px 20px;
       text-align: center;
+      font-size: 16px;
+      color: #666;
+      text-align: left;
       p{
-        font-size: 14px;
+        font-size: 16px;
         color: #666;
       }
     }
@@ -74,6 +77,7 @@
         font-size: 15px;
         flex: 1;
         -webkit-flex: 1;
+        cursor: pointer;
         &+.handle-btn{
           border-left: 1px solid #e5e5e5;
         }
