@@ -4,7 +4,13 @@
       <div class="cm-panel time-panel">
          <div class="panel-hd">
            <div class="handle-list">
-             <div class="cm-btn handle-btn"><i class="icon sort-icon"></i>排序</div>
+             <div class="cm-btn handle-btn">
+               <i class="icon sort-icon"></i>排序
+             </div>
+             <div class="cm-btn-block">
+               <div class="cm-btn btn">按时刻排序</div>
+               <div class="cm-btn btn">按创建时间排序</div>
+             </div>
            </div>
            <span class="title">时刻</span>
            <i class="icon hd-icon married-sm-icon"></i>
@@ -15,7 +21,7 @@
                <div class="entry-content">
                  <div class="cover" :style="{background: 'url('+entry.authUrl+') no-repeat center',backgroundSize: 'cover'}">
                    <div class="handle">
-                     <div class="cm-btn btn">编辑</div>
+                     <div class="cm-btn btn" @click="editTime(index)">编辑</div>
                      <div class="cm-btn btn" @click="delTime(index)">删除</div>
                    </div>
                  </div>

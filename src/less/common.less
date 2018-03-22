@@ -198,9 +198,9 @@ textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
       left: 0px;
       bottom: 10px;
       display: inline-block;
-      overflow: hidden;
     }
     .handle-btn{
+      position: relative;
       margin: 0px 10px;
       float: left;
       display: flex;
@@ -405,4 +405,27 @@ textarea:-ms-input-placeholder { /* Internet Explorer 10+ */
 .el-loading-spinner .path{
   stroke-width:2;
   stroke:#ffabab;
+}
+
+/**/
+.cm-btn-block{
+  position: absolute;
+  top:0rem;
+  left: 0rem;
+  width: 158px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  .btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    background: #fff;
+    font-size: 14px;
+    color: #666;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
+    &+.btn{
+      border-top: 1px solid #ccc;
+    }
+  }
 }

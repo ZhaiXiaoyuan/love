@@ -301,15 +301,20 @@
               ...Vue.tools.sessionInfo(),
               momentId:this.options.entry?this.options.entry.id:this.options.id,
               title:this.title,
-              time:new Date(this.date).getTime(),
+              time:new Date(this.date).getTime()/1000,
               file:this.options.entry.file,
               permission:'private'
             }
+            let fb=this.operationFeedback({text:'保存中...',mask:false});
             Vue.api.editTime(params).then((resp)=>{
               if(resp.respStatus=='success'){
-
+                fb.setOptions({type:'complete',text:'保存成功'});
+                this.options.entry.title=params.title;
+                this.options.entry.time=this.date;
+                this.options.ok&&this.options.ok(this.options);
+                this.close();
               }else{
-
+                fb.setOptions({type:'warn',text:resp.respMsg});
               }
             })
           },
@@ -331,7 +336,6 @@
           if(this.options.type=='add'){//新增时刻
             this.title=this.options.name;
           }else if(this.options.type=='edit'){//编辑时刻
-            console.log('this.options.entry:',this.options.entry);
             if(this.options.entry){
               this.imgUrl=this.options.entry.authUrl;
               this.title=this.options.entry.title;
