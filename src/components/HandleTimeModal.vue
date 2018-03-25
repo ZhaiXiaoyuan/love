@@ -56,11 +56,12 @@
   }
   .modal-content{
     position: fixed;
+    z-index: 100;
     width: 65%;
     height: 742px;
     background: #fff;
     border: 1px solid #e5e5e5;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
     min-width: 900px;
     max-width: 1200px;

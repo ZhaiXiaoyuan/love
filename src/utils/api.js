@@ -113,6 +113,14 @@ export default {
               params: params
             });
           },
+          /*获取相册详情*/
+          getAlbumInfo: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'album/viewAlbum',
+              params: params
+            });
+          },
           /*获取相册图片列表*/
           getPicList: function (params) {
             return Vue.http.ajax({
@@ -198,6 +206,14 @@ export default {
             return Vue.http.ajax({
               method: 'post',
               url: basicUrl + 'moment/editMoment',
+              params: params
+            });
+          },
+          /*获取纪念日列表*/
+          getAnniversaryList: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'anniversary/query',
               params: params
             });
           },

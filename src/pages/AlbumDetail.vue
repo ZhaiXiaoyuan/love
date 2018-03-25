@@ -9,7 +9,11 @@
               <input type="file" id="album-file-input" multiple @change="selectFile()">
             </div>
             <div class="cm-btn handle-btn manage-btn" @click="toEditPic()"><i class="icon manage-icon"></i>批量管理</div>
-            <div class="cm-btn handle-btn complete-btn" @click="toEditAlbum()"><i class="icon more-icon"></i>更多</div>
+            <div class="cm-btn handle-btn" @click="moreHandleBlockFlag=!moreHandleBlockFlag"><i class="icon more-icon"></i>更多</div>
+            <div class="cm-btn-block  more-handle-block" v-if="moreHandleBlockFlag">
+              <div class="cm-btn btn">分享</div>
+              <div class="cm-btn btn" @click="delAlbum()">删除相册</div>
+            </div>
           </div>
            <span class="title" v-if="selectedAlbum">{{selectedAlbum.name}}</span>
           <i class="icon hd-icon married-sm-icon"></i>
@@ -25,6 +29,7 @@
               </div>
             </div>
           </div>
+          <scroll-load :page="pager" @scrolling="getPicList()"></scroll-load>
         </div>
       </div>
       <div class="page-footer"></div>
@@ -45,87 +50,112 @@
         },
         data: function () {
             return {
-              pageType:'album',
-              curAlbum:null,
               selectedAlbum:null,
-            /*  albumList:[{cover:require('../images/common/example-picture.jpg'),name:'婚礼',contentCount:368}],*/
-              albumList:[],
               picList:[],
-              isEditAlbum:false,
               isEditPic:false,
               usedStorage:0,
               totalStorage:5,
+              pager:{
+                type:'noTotal',
+                pageIndex: 1,
+                pageSize: 20,
+                isLoading:false
+              },
+              uploadFb:null,
+              uploadedCount:0,
+              files:[],
+              moreHandleBlockFlag:false,
             }
         },
         computed: {
         },
         watch: {},
         methods: {
-          toEditPic:function () {
-            this.isEditPic=!this.isEditPic;
-          },
-          getRestSpace:function () {
-            Vue.api.getRestSpace({...Vue.tools.sessionInfo(),bucket:'only.love.album.bucket'}).then((resp)=>{
+          getAlbumInfo:function () {
+            let params={
+              ...Vue.tools.sessionInfo(),
+              id:this.$route.params.id
+            }
+            Vue.api.getAlbumInfo(params).then((resp)=>{
               if(resp.respStatus=='success'){
-                let data=JSON.parse(resp.respMsg);
-                this.usedStorage=(data.totleFilesize/(1024*1024)).toFixed(2);
+                this.selectedAlbum=JSON.parse(resp.respMsg);
               }
             });
           },
+          toEditPic:function () {
+            this.isEditPic=!this.isEditPic;
+          },
           selectFile:function () {
             let that=this;
-            let files=document.getElementById('album-file-input').files;
-            let fb=this.operationFeedback({text:'上传中，请耐心等待',mask:true});
-            let uploadedCount=0;
-            for(let i=0;i<files.length;i++){
-              let file=files[i];
-              let sessionInfo=Vue.tools.sessionInfo();
-              let params={
-                ...sessionInfo,
-                bucket:'only.love.album.bucket',
-                file:sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.'+file.type.split('/')[1]
+            this.files=document.getElementById('album-file-input').files;
+            this.uploadFb=this.operationFeedback({text:'上传中，请耐心等待',mask:true});
+            this.uploadedCount=0;
+            let index=0;
+            let uploadInterval=setInterval(()=>{
+              if(index==this.files.length){
+                clearInterval(uploadInterval);
+                return;
               }
-              Vue.api.getUploadKey(params).then(function (resp) {
-                if(resp.respStatus=='success'){
-                  var observable = qiniu.upload(file, params.file, resp.respMsg, {fname: file.name, params: {}, mimeType: [] || null
-                  }, {useCdnDomain: true, region: qiniu.region.z2});
-                  var subscription = observable.subscribe(function (data) {
-                  }, function (error) {
-                  }, function (reslult) {//上传成功
-                    Vue.api.addPic({...Vue.tools.sessionInfo(),albumId:that.selectedAlbum.id,file:params.file,size:file.size,remark:null}).then(function (resp) {
-                      if(resp.respStatus=='success'){
-                        uploadedCount++;
-                        if(uploadedCount==files.length){
-                          if(that.picList.length==0){//如果是该相册的第一张图，则调度接口设置默认封面
-                            Vue.api.setDefCover({...Vue.tools.sessionInfo(),albumId:that.selectedAlbum.id});
-                          }
-                          that.picList.push(JSON.parse(resp.respMsg));
-                          fb.setOptions({type:'complete',text:'上传成功'});
-                        }
-                      }else{
-
-                      }
-                    });
-                 /*   console.log('reslult:',reslult);*/
-                  })
-                }else{
-
-                }
-              });
-            }
+              this.upload(this.files[index]);
+              index++;
+            },1000);
           },
-          getPicList:function () {
+          upload:function (file) {
+            let that=this;
+            let sessionInfo=Vue.tools.sessionInfo();
+            let params={
+              ...sessionInfo,
+              bucket:'only.love.album.bucket',
+              file:sessionInfo.domainId+'-album-'+sessionInfo.timeStamp+'.'+file.type.split('/')[1]
+            }
+            Vue.api.getUploadKey(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                var observable = qiniu.upload(file, params.file, resp.respMsg, {fname: file.name, params: {}, mimeType: [] || null
+                }, {useCdnDomain: true, region: qiniu.region.z2});
+                var subscription = observable.subscribe(function (data) {
+                }, function (error) {
+                }, function (reslult) {//上传成功
+                  Vue.api.addPic({...Vue.tools.sessionInfo(),albumId:that.selectedAlbum.id,file:params.file,size:file.size,remark:null}).then(function (resp) {
+                    if(resp.respStatus=='success'){
+                      that.uploadedCount++;
+                      if(that.uploadedCount==that.files.length){
+                        if(that.picList.length==0){//如果是该相册的第一张图，则调度接口设置默认封面
+                          Vue.api.setDefCover({...Vue.tools.sessionInfo(),albumId:that.selectedAlbum.id});
+                        }
+                        that.uploadFb.setOptions({type:'complete',text:'上传成功'});
+                      }
+                      that.picList.push(JSON.parse(resp.respMsg));
+                    }else{
+
+                    }
+                  });
+                })
+              }else{
+
+              }
+            });
+          },
+          getPicList:function (isInit) {
+            if(isInit){
+              this.pager.pageIndex = 1;
+              this.picList = [];
+            }
             let that=this;
             let params={
               ...Vue.tools.sessionInfo(),
-              albumId:that.selectedAlbum.id,
-              pageNumber:1,
-              pageSize:20
+              albumId:this.$route.params.id,
+              pageNumber:this.pager.pageIndex,
+              pageSize:this.pager.pageSize
             }
             Vue.api.getPicList(params).then(function (resp) {
               if(resp.respStatus=='success'){
                 let data=JSON.parse(resp.respMsg);
-                that.picList=that.picList.concat(data.result);
+                let list=data.result;
+                that.pager.pageIndex=that.pager.pageIndex + 1;
+                that.pager.resultLength=list.length;
+                that.pager.isLoading=false;
+                that.pager.isFinished=false;
+                that.picList=that.picList.concat(list);
               }else{
 
               }
@@ -161,18 +191,34 @@
                 fb.setOptions({type:'warn',text:resp.respMsg});
               }
             })
-          }
+          },
+          delAlbum:function () {
+            let that=this;
+            let params={
+              ...Vue.tools.sessionInfo(),
+              id:this.selectedAlbum.id
+            }
+            this.$router.replace('/album');
+            return;
+            let fb=that.operationFeedback({text:'删除中...'});
+            //
+            Vue.api.delAlbum(params).then(function (resp) {
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'删除成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            });
+          },
         },
         created: function () {
 
         },
         mounted: function () {
-          let that=this;
           //
-          this.getRestSpace();
+          this.getAlbumInfo();
           //
-
-          /**/
+          this.getPicList(true);
         },
         route: {
            /* data: function(transition) {

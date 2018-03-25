@@ -5,6 +5,7 @@ import Home from './pages/Home.vue'
 import Album from './pages/Album.vue'
 import AlbumDetail from './pages/AlbumDetail.vue'
 import Time from './pages/Time.vue'
+import Record from './pages/Record.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,10 @@ const routes=[{
   path: '/time',
   name:'time',
   component: Time
+},{
+  path: '/Record',
+  name:'record',
+  component: Record
 }]
 
 export default new Router({

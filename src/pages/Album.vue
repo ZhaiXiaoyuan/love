@@ -44,6 +44,7 @@
                </div>
              </li>
            </ul>
+           <scroll-load :page="pager" @scrolling="getAlbumList()"></scroll-load>
          </div>
        </div>
       <div class="page-footer"></div>
@@ -69,6 +70,12 @@
               isEditAlbum:false,
               usedStorage:0,
               totalStorage:5,
+              pager:{
+                type:'noTotal',
+                pageIndex: 1,
+                pageSize: 20,
+                isLoading:false
+              }
             }
         },
         computed: {
@@ -87,16 +94,25 @@
               }
             });
           },
-          getAlbumList:function () {
+          getAlbumList:function (isInit) {
+            if(isInit){
+              this.pager.pageIndex = 1;
+              this.albumList = [];
+            }
             let that=this;
             let params={
               ...Vue.tools.sessionInfo(),
-              pageNumber:1,
-              pageSize:20
+              pageNumber:this.pager.pageIndex,
+              pageSize:this.pager.pageSize
             }
             Vue.api.getAlbumList(params).then(function (resp) {
               if(resp.respStatus=='success'){
                 let data=JSON.parse(resp.respMsg);
+                let list=data.result;
+                that.pager.pageIndex=that.pager.pageIndex + 1;
+                that.pager.resultLength=list.length;
+                that.pager.isLoading=false;
+                that.pager.isFinished=false;
                 that.albumList=that.albumList.concat(data.result);
               }else{
 
@@ -159,7 +175,6 @@
             });
           },
           delAlbum:function (index) {
-            console.log('tsdfs')
             let that=this;
             let params={
               ...Vue.tools.sessionInfo(),
@@ -219,7 +234,7 @@
           //
           this.getRestSpace();
           //
-          this.getAlbumList();
+          this.getAlbumList(true);
 
           /**/
         },

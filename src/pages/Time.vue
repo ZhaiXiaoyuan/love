@@ -4,12 +4,12 @@
       <div class="cm-panel time-panel">
          <div class="panel-hd">
            <div class="handle-list">
-             <div class="cm-btn handle-btn">
+             <div class="cm-btn handle-btn" @click="sortBtnBlockFlag=!sortBtnBlockFlag">
                <i class="icon sort-icon"></i>排序
              </div>
-             <div class="cm-btn-block">
-               <div class="cm-btn btn">按时刻排序</div>
-               <div class="cm-btn btn">按创建时间排序</div>
+             <div class="cm-btn-block" v-if="sortBtnBlockFlag">
+               <div class="cm-btn btn" @click="setSortField('time')">按时刻排序</div>
+               <div class="cm-btn btn" @click="setSortField('createdAt')">按创建时间排序</div>
              </div>
            </div>
            <span class="title">时刻</span>
@@ -72,6 +72,7 @@
         data: function () {
             return {
               timeList:[],
+              sortBtnBlockFlag:false,
               sort:'DESC',//排序方式，DESC，ASC
               sortField:'time',//排序字段，time,createdAt
               waitingPanelFlag:false,
@@ -89,13 +90,20 @@
         },
         watch: {},
         methods: {
+          setSortField:function (value) {
+            if(this.sortField==value){
+              this.sort=this.sort=='DESC'?'ASC':'DESC';
+            }else{
+              this.sort='DESC';
+              this.sortField=value;
+            }
+            this.getTimeList(true);
+          },
           getTimeList:function (isInit) {
             let that=this;
             if(isInit){
-              if(isInit){
-                this.pager.pageNum = 1;
-                this.timeList = [];
-              }
+              this.pager.pageIndex = 1;
+              this.timeList = [];
             }
             let params={
               ...Vue.tools.sessionInfo(),

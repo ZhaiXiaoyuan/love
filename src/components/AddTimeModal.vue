@@ -71,6 +71,7 @@
     justify-content: center;
     align-items: center;
     position: fixed;
+    z-index: 100;
     top:0px;
     left: 0px;
     width: 100%;

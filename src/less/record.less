@@ -1,0 +1,67 @@
+.record-page{
+  .content-block{
+    margin: 4% auto 0px auto;
+    max-width: 1200px;
+    min-height: 500px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    padding: 0px 5% 5% 5%;
+    font-family: '宋体';
+    .block-hd{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 88px;
+      .title{
+        font-size: 28px;
+        color: #b3b3b3;
+      }
+      .add-btn{
+        position: absolute;
+        top:0px;
+        bottom: 0px;
+        right: 0px;
+        margin: auto;
+        display: flex;
+        width: 160px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border:1px solid #ccc;
+        font-size: 18px;
+        color: #b3b3b3;
+        border-radius: 5px;
+        .icon{
+          margin-right: 10px;
+        }
+      }
+    }
+    .block-bd{
+      border: 1px solid #e0e0e0;
+      min-height: 500px;
+    }
+    table{
+      width: 100%;
+      text-align: center;
+      color: #b3b3b3;
+      font-size: 18px;
+      td{
+        height: 70px;
+        width: 15%;
+      }
+      thead{
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .handle-btn{
+        padding: 4px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        &+.handle-btn{
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}
