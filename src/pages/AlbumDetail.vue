@@ -198,13 +198,14 @@
               ...Vue.tools.sessionInfo(),
               id:this.selectedAlbum.id
             }
-            this.$router.replace('/album');
-            return;
             let fb=that.operationFeedback({text:'删除中...'});
             //
             Vue.api.delAlbum(params).then(function (resp) {
               if(resp.respStatus=='success'){
                 fb.setOptions({type:'complete',text:'删除成功'});
+                setTimeout(()=>{
+                  this.$router.replace('/album');
+                },1000);
               }else{
                 fb.setOptions({type:'warn',text:resp.respMsg});
               }

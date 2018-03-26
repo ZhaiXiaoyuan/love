@@ -11,6 +11,7 @@ import GenCode from './GenCode';
 import AddTimeModal from './AddTimeModal';
 import HandleTimeModal from './HandleTimeModal';
 import ScrollLoad from './ScrollLoad';
+import HandleRecordModal from './HandleRecordModal';
 
 /*全局组件注册配置*/
 export default {
@@ -25,6 +26,7 @@ export default {
     Vue.component('AddTimeModal',AddTimeModal);
     Vue.component('HandleTimeModal',HandleTimeModal);
     Vue.component('ScrollLoad',ScrollLoad);
+    Vue.component('HandleRecordModal',HandleRecordModal);
 
     /*方法调度方式*/
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
@@ -32,6 +34,7 @@ export default {
     let ConfrimModalConstructor=Vue.extend(ConfirmModal);
     let AddTimeModalConstructor=Vue.extend(AddTimeModal);
     let HandleTimeModalConstructor=Vue.extend(HandleTimeModal);
+    let HandleRecordModalConstructor=Vue.extend(HandleRecordModal);
     const functionObject={
       /**
        * 操作提示
@@ -210,6 +213,27 @@ export default {
         let parentEle=document.getElementById('app');
         //
         let instance=new HandleTimeModalConstructor({});
+        instance.options=options;
+        instance.$mount();
+        parentEle.appendChild(instance.$el);
+      }
+      ,
+      /**
+       * 纪念日新建、编辑弹窗
+       * @param options
+       */
+      handleRecordModal:function (options) {
+        options={...{
+          type:'add',
+          id:null,
+          entry:null,
+          ok:null,//回调
+          cancel:null,//
+        },...options};
+        //
+        let parentEle=document.getElementById('app');
+        //
+        let instance=new HandleRecordModalConstructor({});
         instance.options=options;
         instance.$mount();
         parentEle.appendChild(instance.$el);

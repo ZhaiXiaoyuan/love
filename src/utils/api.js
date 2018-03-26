@@ -217,6 +217,38 @@ export default {
               params: params
             });
           },
+          /*新增纪念日*/
+          addAnniversary: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'anniversary/add',
+              params: params
+            });
+          },
+          /*删除纪念日*/
+          delAnniversary: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'anniversary/delete',
+              params: params
+            });
+          },
+          /*修改纪念日名称*/
+          updateAnniversaryName: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'anniversary/updateName',
+              params: params
+            });
+          },
+          /*修改纪念日提醒时间*/
+          updateAnniversaryRemind: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'anniversary/setRemind',
+              params: params
+            });
+          },
         }
     },
 
