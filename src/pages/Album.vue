@@ -141,7 +141,7 @@
               contentCount:0,
               new:true
             };
-            that.albumList.push(temAlbum);
+            that.albumList.unshift(temAlbum);
             that.curAlbum=temAlbum;
           },
           addAlbum:function () {

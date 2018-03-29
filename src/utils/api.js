@@ -249,6 +249,38 @@ export default {
               params: params
             });
           },
+          /*设置首页背景*/
+          setIndexBg: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'domain/setIndexBgPic',
+              params: params
+            });
+          },
+          /*设置登录背景背景*/
+          setLoginBg: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'domain/setLoginBgPic',
+              params: params
+            });
+          },
+          /*发送短信验证码*/
+          sendVerfifyCode: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'sms/sendVerifySms',
+              params: params
+            });
+          },
+          /*验证短信验证码*/
+          checkVerfifyCode: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'sms/verifySms',
+              params: params
+            });
+          },
         }
     },
 

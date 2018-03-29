@@ -20,6 +20,10 @@
              <li class="entry" v-for="(entry,index) in timeList">
                <div class="entry-content">
                  <div class="cover" :style="{background: 'url('+entry.authUrl+') no-repeat center',backgroundSize: 'cover'}">
+                   <div class="top-handle">
+                     <div class="cm-btn btn" @click="setIndexBg(index)">首页<br>背景</div>
+                     <div class="cm-btn btn" @click="setLoginBg(index)">登录<br>背景</div>
+                   </div>
                    <div class="handle">
                      <div class="cm-btn btn" @click="editTime(index)">编辑</div>
                      <div class="cm-btn btn" @click="delTime(index)">删除</div>
@@ -163,8 +167,8 @@
           },
           delTime:function (index) {
             var time=this.timeList[index];
-            this.confirm({
-              html:'<div>确定删除<em style="color:#368df3;">'+time.title+'</em>时刻?</div>',
+            this.verifyModal({
+              title:'确定删除该时刻？',
               ok:()=>{
                 let params={
                   ...Vue.tools.sessionInfo(),
@@ -191,6 +195,36 @@
 
               }
             });
+          },
+          setIndexBg:function (index) {
+            let params={
+              ...Vue.tools.sessionInfo(),
+              bucket:'only.love.moment.bucket',
+              id:this.timeList[index].id,
+            }
+            let fb=this.operationFeedback({text:'设置中...'});
+            Vue.api.setIndexBg(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'设置成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            })
+          },
+          setLoginBg:function (index) {
+            let params={
+              ...Vue.tools.sessionInfo(),
+              bucket:'only.love.moment.bucket',
+              id:this.timeList[index].id,
+            }
+            let fb=this.operationFeedback({text:'设置中...'});
+            Vue.api.setLoginBg(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'设置成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            })
           }
         },
         created: function () {

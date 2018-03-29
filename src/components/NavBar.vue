@@ -103,16 +103,20 @@
               loverName:''
           }
         },
+        watch:{
+          '$route': function(to, from) {
+            this.pageName=this.$route.name;
+          },
+        },
         methods:{
           link:function (value) {
 
           }
         },
         created: function () {
-          this.pageName=this.$route.name;
-          console.log('this.pageName:',this.$route.name);
         },
         mounted:function () {
+          this.pageName=this.$route.name;
         },
     }
 

@@ -8,11 +8,14 @@
               <i class="icon add-icon"></i>上传照片/视频
               <input type="file" id="album-file-input" multiple @change="selectFile()">
             </div>
-            <div class="cm-btn handle-btn manage-btn" @click="toEditPic()"><i class="icon manage-icon"></i>批量管理</div>
-            <div class="cm-btn handle-btn" @click="moreHandleBlockFlag=!moreHandleBlockFlag"><i class="icon more-icon"></i>更多</div>
-            <div class="cm-btn-block  more-handle-block" v-if="moreHandleBlockFlag">
-              <div class="cm-btn btn">分享</div>
-              <div class="cm-btn btn" @click="delAlbum()">删除相册</div>
+            <!--功能待定-->
+            <!--<div class="cm-btn handle-btn manage-btn" @click="toEditPic()"><i class="icon manage-icon"></i>批量管理</div>-->
+            <div class="cm-btn handle-btn" @click="moreHandleBlockFlag=!moreHandleBlockFlag">
+              <i class="icon more-icon"></i>更多
+              <div class="cm-btn-block  more-handle-block" v-if="moreHandleBlockFlag">
+                <div class="cm-btn btn">分享</div>
+                <div class="cm-btn btn" @click="delAlbum()">删除相册</div>
+              </div>
             </div>
           </div>
            <span class="title" v-if="selectedAlbum">{{selectedAlbum.name}}</span>
@@ -22,7 +25,11 @@
           <div v-for="n in 4">
             <div class="item" v-for="(item,index) in picList" v-if="index%4==n-1" :key="item.id">
               <img :src="item.file" alt="">
-              <div class="cm-btn del-btn" @click="delPic(index)"><i class="icon del-grey-icon "></i></div>
+              <div class="top-handle">
+                <div class="cm-btn btn" @click="setIndexBg(index)">首页<br>背景</div>
+                <div class="cm-btn btn" @click="setLoginBg(index)">登录<br>背景</div>
+                <div class="cm-btn btn del-btn" @click="delPic(index)"><i class="icon del-grey-icon "></i></div>
+              </div>
               <div class="handle">
               <!--  <div class="cm-btn btn">编辑</div>-->
                 <div class="cm-btn btn" @click="setCover(index)">设为封面</div>
@@ -167,13 +174,18 @@
               ...Vue.tools.sessionInfo(),
               id:that.picList[index].id
             }
-            let fb=that.operationFeedback({text:'删除中...'});
-            Vue.api.delPic(params).then(function (resp) {
-              if(resp.respStatus=='success'){
-                that.picList.splice(index,1);
-                fb.setOptions({type:'complete',text:'删除成功'});
-              }else{
-                fb.setOptions({type:'warn',text:resp.respMsg});
+            this.verifyModal({
+              title:'确定删除该照片？',
+              ok:()=>{
+                let fb=that.operationFeedback({text:'删除中...'});
+                Vue.api.delPic(params).then(function (resp) {
+                  if(resp.respStatus=='success'){
+                    that.picList.splice(index,1);
+                    fb.setOptions({type:'complete',text:'删除成功'});
+                  }else{
+                    fb.setOptions({type:'warn',text:resp.respMsg});
+                  }
+                });
               }
             });
           },
@@ -211,6 +223,36 @@
               }
             });
           },
+          setIndexBg:function (index) {
+            let params={
+              ...Vue.tools.sessionInfo(),
+              bucket:'only.love.album.bucket',
+              id:this.picList[index].id,
+            }
+            let fb=this.operationFeedback({text:'设置中...'});
+            Vue.api.setIndexBg(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'设置成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            })
+          },
+          setLoginBg:function (index) {
+            let params={
+              ...Vue.tools.sessionInfo(),
+              bucket:'only.love.album.bucket',
+              id:this.picList[index].id,
+            }
+            let fb=this.operationFeedback({text:'设置中...'});
+            Vue.api.setLoginBg(params).then((resp)=>{
+              if(resp.respStatus=='success'){
+                fb.setOptions({type:'complete',text:'设置成功'});
+              }else{
+                fb.setOptions({type:'warn',text:resp.respMsg});
+              }
+            })
+          }
         },
         created: function () {
 
@@ -232,6 +274,9 @@
 
             },
             waitForData: true,*/
+          afterEach:()=>{
+            console.log(23234);
+          }
         }
 
     };

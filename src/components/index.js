@@ -12,6 +12,7 @@ import AddTimeModal from './AddTimeModal';
 import HandleTimeModal from './HandleTimeModal';
 import ScrollLoad from './ScrollLoad';
 import HandleRecordModal from './HandleRecordModal';
+import VerifyModal from './VerifyModal';
 
 /*全局组件注册配置*/
 export default {
@@ -27,6 +28,7 @@ export default {
     Vue.component('HandleTimeModal',HandleTimeModal);
     Vue.component('ScrollLoad',ScrollLoad);
     Vue.component('HandleRecordModal',HandleRecordModal);
+    Vue.component('VerifyModal',VerifyModal);
 
     /*方法调度方式*/
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
@@ -35,6 +37,7 @@ export default {
     let AddTimeModalConstructor=Vue.extend(AddTimeModal);
     let HandleTimeModalConstructor=Vue.extend(HandleTimeModal);
     let HandleRecordModalConstructor=Vue.extend(HandleRecordModal);
+    let VerifyModalConstructor=Vue.extend(VerifyModal);
     const functionObject={
       /**
        * 操作提示
@@ -237,7 +240,29 @@ export default {
         instance.options=options;
         instance.$mount();
         parentEle.appendChild(instance.$el);
+      },
+      /**
+       * 短信校验弹窗
+       * @param options
+       */
+      verifyModal:function (options) {
+        options={...{
+          title: '温馨提示',//提示标题
+          html: '',   //提示内容
+          yes: '确 定',
+          no: '取 消',
+          ok:null,//回调
+          cancel:null,//
+        },...options};
+        //
+        let parentEle=document.getElementById('app');
+        //
+        let instance=new VerifyModalConstructor({});
+        instance.options=options;
+        instance.$mount();
+        parentEle.appendChild(instance.$el);
       }
+      ,
     }
     /**/
     Object.assign(Vue,functionObject);
