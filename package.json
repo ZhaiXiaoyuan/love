@@ -27,7 +27,8 @@
     "vue-cookie": "^1.1.4",
     "vue-cookies": "^1.5.5",
     "vue-resource": "^1.4.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue2-animate": "^1.0.4"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -281,6 +281,14 @@ export default {
               params: params
             });
           },
+          /*获取域名信息*/
+          getDomainInfo: function (params) {
+            return Vue.http.ajax({
+              method: 'post',
+              url: basicUrl + 'domain/redirect',
+              params: params
+            });
+          },
         }
     },
 

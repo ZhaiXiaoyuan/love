@@ -3,7 +3,7 @@
     <div class="home-page" :style="{background: 'url('+coverPic+') no-repeat center',backgroundSize: 'auto 140%'}">
       <div class="page-content">
         <img class="flower-icon" :src="weddingFlower">
-        <p class="love-time">这是我们相爱的第<em class="en-text">99</em>天.</p>
+       <!-- <p class="love-time">这是我们相爱的第<em class="en-text">99</em>天.</p>-->
         <div class="cover-win">
           <div class="win-content">
             <img class="flower-icon" :src="coverPic">
@@ -32,8 +32,9 @@
         },
         data: function () {
             return {
-              coverPic:require('../images/common/example-picture.jpg'),
+              coverPic:null,
               weddingFlower:require('../images/common/home-wedding-flower-icon.png'),
+              homeBgInfo:null,
             }
         },
         computed: {},
@@ -47,7 +48,17 @@
           });*/
         },
         mounted: function () {
+          /**/
+          Vue.api.getDomainInfo({...Vue.tools.sessionInfo()}).then((resp)=>{
+            if(resp.respStatus=='success'){
+              this.homeBgInfo=JSON.parse(resp.respMsg).indexBackgroundPic;
+              this.homeBgInfo=this.homeBgInfo?JSON.parse(this.homeBgInfo):null;
+              this.coverPic=this.homeBgInfo?this.homeBgInfo.publicUrl:require('../images/common/example-picture.jpg');
+              console.log('this.homeBgInfo:',this.homeBgInfo.file);
+            }else{
 
+            }
+          });
         },
         route: {
            /* data: function(transition) {

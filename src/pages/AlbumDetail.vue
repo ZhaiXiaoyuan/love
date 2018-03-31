@@ -23,7 +23,7 @@
         </div>
         <div class="panel-bd">
           <div v-for="n in 4">
-            <div class="item" v-for="(item,index) in picList" v-if="index%4==n-1" :key="item.id">
+            <div class="item" v-for="(item,index) in picList" v-if="index%4==n-1" :key="item.id" @click="viewPicModal(picList,index)">
               <img :src="item.file" alt="">
               <div class="top-handle">
                 <div class="cm-btn btn" @click="setIndexBg(index)">首页<br>背景</div>
@@ -40,6 +40,7 @@
         </div>
       </div>
       <div class="page-footer"></div>
+      <view-pic-modal></view-pic-modal>
     </div>
 </template>
 
@@ -252,6 +253,9 @@
                 fb.setOptions({type:'warn',text:resp.respMsg});
               }
             })
+          },
+          viewPicModal:function (list,curIndex) {
+
           }
         },
         created: function () {

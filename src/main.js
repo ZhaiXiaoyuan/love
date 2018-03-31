@@ -3,9 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import vueResource from 'vue-resource'
+import $ from 'jquery'
 import vueCookie from 'vue-cookie'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'vue2-animate/dist/vue2-animate.min.css'
 import router from './router'
 import api from './utils/api'
 import tools from './utils/tools'

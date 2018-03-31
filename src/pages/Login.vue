@@ -36,6 +36,7 @@
 <script>
     import Vue from 'vue'
     import md5 from 'js-md5'
+    import $ from 'jquery'
 
     export default {
         components: {
@@ -46,6 +47,8 @@
               loverName:null,
               vipLevel:0,
               password:null,
+              loginBgInfo:null,
+              coverPic:null,
             }
         },
         computed: {},
@@ -85,6 +88,20 @@
             this.loverName=hostNameStrArr[0];
 
           }
+          /**/
+          Vue.api.getDomainInfo({...Vue.tools.sessionInfo()}).then((resp)=>{
+            if(resp.respStatus=='success'){
+              this.loginBgInfo=JSON.parse(resp.respMsg).loginBackgroundPic;
+              this.loginBgInfo=this.loginBgInfo?JSON.parse(this.loginBgInfo):null;
+              this.coverPic=this.loginBgInfo?this.loginBgInfo.publicUrl:require('../images/common/kiss-bg.jpg');
+              $('.login-page').css({
+                'background':'url('+this.coverPic+') no-repeat center',
+                'background-size':"100% auto"
+              });
+            }else{
+
+            }
+          });
         },
         route: {
            /* data: function(transition) {

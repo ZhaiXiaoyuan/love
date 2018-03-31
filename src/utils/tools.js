@@ -126,6 +126,7 @@ export default {
           },
           /*阻止事件冒泡*/
           stopPropagation:function(e){
+            console.log('e:',e);
             if(e){
               if(e.cancelBubble){
                 e.cancelBubble = true;

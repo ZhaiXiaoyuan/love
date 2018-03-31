@@ -13,6 +13,7 @@ import HandleTimeModal from './HandleTimeModal';
 import ScrollLoad from './ScrollLoad';
 import HandleRecordModal from './HandleRecordModal';
 import VerifyModal from './VerifyModal';
+import ViewPicModal from './ViewPicModal';
 
 /*全局组件注册配置*/
 export default {
@@ -29,6 +30,7 @@ export default {
     Vue.component('ScrollLoad',ScrollLoad);
     Vue.component('HandleRecordModal',HandleRecordModal);
     Vue.component('VerifyModal',VerifyModal);
+    Vue.component('ViewPicModal',ViewPicModal);
 
     /*方法调度方式*/
     let OperationFeedbackConstructor = Vue.extend(OperationFeedback);
