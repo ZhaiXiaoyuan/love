@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<style lang="less" rel="stylesheet/less">
+<style lang="less" rel="stylesheet/less" scoped>
   .handle-record-modal{
     display: flex;
     justify-content: center;

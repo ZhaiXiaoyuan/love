@@ -1,13 +1,17 @@
 /**
  * 接口地址放在这里，存放在Vue的全局自定义方法
  * */
+import router from '../router'
+
 export default {
     install: function (Vue, options) {
 
       Vue.http.options.emulateJSON = true;
       Vue.http.interceptors.push((request, next)  =>{
-
         next((response) => {
+          if(response.body.respCode=='4001'){
+            router.push({name:'login'});
+          }
           return response
         });
 

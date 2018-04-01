@@ -36,7 +36,7 @@
   </div>
 </template>
 
-<style lang="less" rel="stylesheet/less">
+<style lang="less" rel="stylesheet/less" scoped>
   .handle-time-modal{
     display: flex;
     justify-content: center;

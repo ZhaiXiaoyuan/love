@@ -83,6 +83,10 @@ export default {
           },
           sessionInfo:function () {
             let session=JSON.parse(JSON.parse(Vue.cookie.get('session')));
+            if(!session){
+              router.push({name:'login'});
+              return;
+            }
             var random = '';
             for(var i = 0; i < 6; i += 1){
               random += Math.floor(Math.random() * 10);

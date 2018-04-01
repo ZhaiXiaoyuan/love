@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="page-footer"></div>
-      <view-pic-modal></view-pic-modal>
+      <!--<view-pic-modal></view-pic-modal>-->
     </div>
 </template>
 
