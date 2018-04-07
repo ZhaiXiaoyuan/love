@@ -25,6 +25,7 @@
 
 <script>
     import Vue from 'vue'
+    import '../../static/lib/punyCode/punyCode.js'
 
     export default {
         components: {
@@ -32,6 +33,7 @@
         },
         data: function () {
             return {
+              hostName:null,
               coverPic:null,
               weddingFlower:require('../images/common/home-wedding-flower-icon.png'),
               homeBgInfo:null,
@@ -49,14 +51,19 @@
         },
         mounted: function () {
           /**/
-          Vue.api.getDomainInfo({...Vue.tools.sessionInfo()}).then((resp)=>{
+          this.hostName=window.location.hostname;
+          let sessionInfo=Vue.tools.sessionInfo();
+          let params={
+            timeStamp:sessionInfo.timeStamp,
+            domain:new IdnMapping().toUnicode(this.hostName),
+          }
+          Vue.api.getDomainInfo(params).then((resp)=>{
             if(resp.respStatus=='success'){
               this.homeBgInfo=JSON.parse(resp.respMsg).indexBackgroundPic;
               this.homeBgInfo=this.homeBgInfo?JSON.parse(this.homeBgInfo):null;
               this.coverPic=this.homeBgInfo?this.homeBgInfo.publicUrl:require('../images/common/example-picture.jpg');
-              console.log('this.homeBgInfo:',this.homeBgInfo.file);
             }else{
-
+              this.coverPic=require('../images/common/example-picture.jpg');
             }
           });
         },
