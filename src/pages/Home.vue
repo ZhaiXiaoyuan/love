@@ -52,9 +52,8 @@
         mounted: function () {
           /**/
           this.hostName=window.location.hostname;
-          let sessionInfo=Vue.tools.sessionInfo();
           let params={
-            timeStamp:sessionInfo.timeStamp,
+            timeStamp:Vue.tools.genTimestamp(),
             domain:new IdnMapping().toUnicode(this.hostName),
           }
           Vue.api.getDomainInfo(params).then((resp)=>{
